@@ -1,0 +1,545 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B99BA4E1-8015-4D8B-AB40-0E82AAFB8D0E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AttendanceReport</RootNamespace>
+    <AssemblyName>AttendanceReport</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.barcodes, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.barcodes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.forms, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.io, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.io.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.kernel, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.kernel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.layout, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.layout.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.licensekey, Version=2.0.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.licensekey.2.0.3\lib\net40\itext.licensekey.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.pdfa, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.pdfa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itext.sign, Version=7.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.0.2\lib\net40\itext.sign.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActivityReportForm.Designer.cs">
+      <DependentUpon>ActivityReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AlarmedListReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlarmedListReportForm.Designer.cs">
+      <DependentUpon>AlarmedListReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BannedEntryReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BannedEntryReportForm.Designer.cs">
+      <DependentUpon>BannedEntryReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CardHolderReportInfo.cs" />
+    <Compile Include="CategoryWiseReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CategoryWiseReportForm.Designer.cs">
+      <DependentUpon>CategoryWiseReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CCFTCentral\AccessDecisionTileConfig.cs" />
+    <Compile Include="CCFTCentral\AccessTriplet.cs" />
+    <Compile Include="CCFTCentral\AccessZone.cs" />
+    <Compile Include="CCFTCentral\AccessZoneCompetencyPair.cs" />
+    <Compile Include="CCFTCentral\AccessZoneRelation.cs" />
+    <Compile Include="CCFTCentral\ActionPlan.cs" />
+    <Compile Include="CCFTCentral\ActionPlanOutput.cs" />
+    <Compile Include="CCFTCentral\ActionPlanState.cs" />
+    <Compile Include="CCFTCentral\ActionPlanTrigger.cs" />
+    <Compile Include="CCFTCentral\AlarmDetailsTileField.cs" />
+    <Compile Include="CCFTCentral\AlarmDialler.cs" />
+    <Compile Include="CCFTCentral\AlarmInstruction.cs" />
+    <Compile Include="CCFTCentral\AlarmInstructionTag.cs" />
+    <Compile Include="CCFTCentral\AlarmKeypad.cs" />
+    <Compile Include="CCFTCentral\AlarmListNavPanelDisplayColumn.cs" />
+    <Compile Include="CCFTCentral\AlarmListNavPanelRule.cs" />
+    <Compile Include="CCFTCentral\AlarmNote.cs" />
+    <Compile Include="CCFTCentral\AlarmPriority.cs" />
+    <Compile Include="CCFTCentral\AlarmZone.cs" />
+    <Compile Include="CCFTCentral\AlarmZoneRelation.cs" />
+    <Compile Include="CCFTCentral\AperioDoor.cs" />
+    <Compile Include="CCFTCentral\APITriggerTag.cs" />
+    <Compile Include="CCFTCentral\Archive.cs" />
+    <Compile Include="CCFTCentral\ArchiveFile.cs" />
+    <Compile Include="CCFTCentral\ArchiveFileDivision.cs" />
+    <Compile Include="CCFTCentral\BackupSet.cs" />
+    <Compile Include="CCFTCentral\Bert.cs" />
+    <Compile Include="CCFTCentral\BertConnection.cs" />
+    <Compile Include="CCFTCentral\BertDatabase.cs" />
+    <Compile Include="CCFTCentral\BertDependent.cs" />
+    <Compile Include="CCFTCentral\BertDN.cs" />
+    <Compile Include="CCFTCentral\BiometricReader.cs" />
+    <Compile Include="CCFTCentral\BulkChange.cs" />
+    <Compile Include="CCFTCentral\BulkChangeMod.cs" />
+    <Compile Include="CCFTCentral\Calendar.cs" />
+    <Compile Include="CCFTCentral\Card.cs" />
+    <Compile Include="CCFTCentral\Cardholder.cs" />
+    <Compile Include="CCFTCentral\CardholderCompetencyPair.cs" />
+    <Compile Include="CCFTCentral\CardholderDetailsTile.cs" />
+    <Compile Include="CCFTCentral\CardholderDetailsTileField.cs" />
+    <Compile Include="CCFTCentral\CardholderFingerprint.cs" />
+    <Compile Include="CCFTCentral\CardholderImagesTile.cs" />
+    <Compile Include="CCFTCentral\CardholderLastSuccessfulAccess.cs" />
+    <Compile Include="CCFTCentral\CardholderLocation.cs" />
+    <Compile Include="CCFTCentral\CardholderNotificationFilter.cs" />
+    <Compile Include="CCFTCentral\CardholderRole.cs" />
+    <Compile Include="CCFTCentral\CardLayout.cs" />
+    <Compile Include="CCFTCentral\CardLayoutASCIIMifare.cs" />
+    <Compile Include="CCFTCentral\CardLayoutASCIIMifarePlu.cs" />
+    <Compile Include="CCFTCentral\CardLayoutBarcode.cs" />
+    <Compile Include="CCFTCentral\CardLayoutGraphic.cs" />
+    <Compile Include="CCFTCentral\CardLayoutMagstripe.cs" />
+    <Compile Include="CCFTCentral\CardLayoutMifare.cs" />
+    <Compile Include="CCFTCentral\CardLayoutMifarePlu.cs" />
+    <Compile Include="CCFTCentral\CardLayoutObject.cs" />
+    <Compile Include="CCFTCentral\CardLayoutObjectElement.cs" />
+    <Compile Include="CCFTCentral\CardLayoutSagem.cs" />
+    <Compile Include="CCFTCentral\CardLayoutSalto.cs" />
+    <Compile Include="CCFTCentral\CardLayoutSide.cs" />
+    <Compile Include="CCFTCentral\CardLayoutText.cs" />
+    <Compile Include="CCFTCentral\CardNumberFormat.cs" />
+    <Compile Include="CCFTCentral\CardType.cs" />
+    <Compile Include="CCFTCentral\CCFTCentral.cs" />
+    <Compile Include="CCFTCentral\ChangeSet.cs" />
+    <Compile Include="CCFTCentral\ChangeSetField.cs" />
+    <Compile Include="CCFTCentral\ChangeSetItem.cs" />
+    <Compile Include="CCFTCentral\ChangeSetPending.cs" />
+    <Compile Include="CCFTCentral\Club.cs" />
+    <Compile Include="CCFTCentral\ClubAlarmZone.cs" />
+    <Compile Include="CCFTCentral\ClubMembershipPair.cs" />
+    <Compile Include="CCFTCentral\ClubPersonalDataFieldPair.cs" />
+    <Compile Include="CCFTCentral\CmdrAccess.cs" />
+    <Compile Include="CCFTCentral\CmdrAccessZoneTimeFrame.cs" />
+    <Compile Include="CCFTCentral\CmdrDoor.cs" />
+    <Compile Include="CCFTCentral\CmdrDoorPersonalDataFieldPair.cs" />
+    <Compile Include="CCFTCentral\CmdrInput.cs" />
+    <Compile Include="CCFTCentral\CmdrOutput.cs" />
+    <Compile Include="CCFTCentral\Commander.cs" />
+    <Compile Include="CCFTCentral\Competency.cs" />
+    <Compile Include="CCFTCentral\CompetencyMessageInfo.cs" />
+    <Compile Include="CCFTCentral\ComplexType.cs" />
+    <Compile Include="CCFTCentral\ComplexTypeProperty.cs" />
+    <Compile Include="CCFTCentral\ConfigDispatchFieldControllerItemTypePair.cs" />
+    <Compile Include="CCFTCentral\ConfigDispatchRoute.cs" />
+    <Compile Include="CCFTCentral\ControllerItem.cs" />
+    <Compile Include="CCFTCentral\ControllerItemCustomisation.cs" />
+    <Compile Include="CCFTCentral\ControllerItemType.cs" />
+    <Compile Include="CCFTCentral\CustomField.cs" />
+    <Compile Include="CCFTCentral\Customisation.cs" />
+    <Compile Include="CCFTCentral\CycleDay.cs" />
+    <Compile Include="CCFTCentral\DatabaseSynchroniserPair.cs" />
+    <Compile Include="CCFTCentral\DataType.cs" />
+    <Compile Include="CCFTCentral\DayCategory.cs" />
+    <Compile Include="CCFTCentral\DBTemplateRestoreHook.cs" />
+    <Compile Include="CCFTCentral\DefaultOperatorPreference.cs" />
+    <Compile Include="CCFTCentral\DefinedEOLResistance.cs" />
+    <Compile Include="CCFTCentral\DefinedEOLResistanceThreshold.cs" />
+    <Compile Include="CCFTCentral\DeviceSoftware.cs" />
+    <Compile Include="CCFTCentral\DeviceSoftwareModule.cs" />
+    <Compile Include="CCFTCentral\DisturbanceSensor.cs" />
+    <Compile Include="CCFTCentral\Division.cs" />
+    <Compile Include="CCFTCentral\DivisionBadgeText.cs" />
+    <Compile Include="CCFTCentral\DivisionDescendant.cs" />
+    <Compile Include="CCFTCentral\DivisionFindVisitorGridColumn.cs" />
+    <Compile Include="CCFTCentral\DivisionHomePageField.cs" />
+    <Compile Include="CCFTCentral\DivisionMacro.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitAction.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitorType.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitorTypeAccessGroup.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitorTypeField.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitorTypeHostType.cs" />
+    <Compile Include="CCFTCentral\DivisionVisitorTypeVisitVisitorField.cs" />
+    <Compile Include="CCFTCentral\Door.cs" />
+    <Compile Include="CCFTCentral\DoorLastAccess.cs" />
+    <Compile Include="CCFTCentral\DoorPersonalDataFieldPair.cs" />
+    <Compile Include="CCFTCentral\DoorRelation.cs" />
+    <Compile Include="CCFTCentral\DVRCamera.cs" />
+    <Compile Include="CCFTCentral\DVRCameraTileConfig.cs" />
+    <Compile Include="CCFTCentral\DVRType.cs" />
+    <Compile Include="CCFTCentral\EDIConfigData.cs" />
+    <Compile Include="CCFTCentral\EDIConfiguration.cs" />
+    <Compile Include="CCFTCentral\ElmoMessage.cs" />
+    <Compile Include="CCFTCentral\ElmoMessageBatch.cs" />
+    <Compile Include="CCFTCentral\ElmoPersonalDataFieldPair.cs" />
+    <Compile Include="CCFTCentral\EnrolmentTemplate.cs" />
+    <Compile Include="CCFTCentral\EnrolmentTemplateData.cs" />
+    <Compile Include="CCFTCentral\EventGroup.cs" />
+    <Compile Include="CCFTCentral\EventGroupDefaultInstruction.cs" />
+    <Compile Include="CCFTCentral\EventGroupItemActionPlan.cs" />
+    <Compile Include="CCFTCentral\EventGroupItemAlarmInstruction.cs" />
+    <Compile Include="CCFTCentral\EventGroupItemAlarmZone.cs" />
+    <Compile Include="CCFTCentral\EventGroupZoneActionPlan.cs" />
+    <Compile Include="CCFTCentral\EventTrailTile.cs" />
+    <Compile Include="CCFTCentral\EventTrailTileItem.cs" />
+    <Compile Include="CCFTCentral\EventType.cs" />
+    <Compile Include="CCFTCentral\EventTypeDefaultInstruction.cs" />
+    <Compile Include="CCFTCentral\EventTypeItemAlarmInstruction.cs" />
+    <Compile Include="CCFTCentral\ExpiryNotificationRecord.cs" />
+    <Compile Include="CCFTCentral\ExternalEventSource.cs" />
+    <Compile Include="CCFTCentral\ExternalSystem.cs" />
+    <Compile Include="CCFTCentral\ExternalSystemType.cs" />
+    <Compile Include="CCFTCentral\FacilityCode.cs" />
+    <Compile Include="CCFTCentral\FenceController.cs" />
+    <Compile Include="CCFTCentral\FenceZone.cs" />
+    <Compile Include="CCFTCentral\FieldDevice.cs" />
+    <Compile Include="CCFTCentral\FieldDeviceSoftware.cs" />
+    <Compile Include="CCFTCentral\FingerprintBiometricType.cs" />
+    <Compile Include="CCFTCentral\FTItem.cs" />
+    <Compile Include="CCFTCentral\FTItemRelationship.cs" />
+    <Compile Include="CCFTCentral\FTItemType.cs" />
+    <Compile Include="CCFTCentral\FTItemTypeState.cs" />
+    <Compile Include="CCFTCentral\GBusURI.cs" />
+    <Compile Include="CCFTCentral\GuardTour.cs" />
+    <Compile Include="CCFTCentral\GuardTourCheckpoint.cs" />
+    <Compile Include="CCFTCentral\GuardTourProgress.cs" />
+    <Compile Include="CCFTCentral\IconSet.cs" />
+    <Compile Include="CCFTCentral\IconSetStateSetting.cs" />
+    <Compile Include="CCFTCentral\Input.cs" />
+    <Compile Include="CCFTCentral\InsertionTag.cs" />
+    <Compile Include="CCFTCentral\IntercomSystem.cs" />
+    <Compile Include="CCFTCentral\InterlockDoor.cs" />
+    <Compile Include="CCFTCentral\InterlockException.cs" />
+    <Compile Include="CCFTCentral\InterlockSetting.cs" />
+    <Compile Include="CCFTCentral\ISIntercom.cs" />
+    <Compile Include="CCFTCentral\KeyMap.cs" />
+    <Compile Include="CCFTCentral\Licence.cs" />
+    <Compile Include="CCFTCentral\LiftCar.cs" />
+    <Compile Include="CCFTCentral\LiftCarLevel.cs" />
+    <Compile Include="CCFTCentral\LiftCarRelation.cs" />
+    <Compile Include="CCFTCentral\LiftHLI.cs" />
+    <Compile Include="CCFTCentral\LiftHLIProtocol.cs" />
+    <Compile Include="CCFTCentral\LogicBlock.cs" />
+    <Compile Include="CCFTCentral\LogicBlockRelation.cs" />
+    <Compile Include="CCFTCentral\LogicBlockRule.cs" />
+    <Compile Include="CCFTCentral\Macro.cs" />
+    <Compile Include="CCFTCentral\MacroAction.cs" />
+    <Compile Include="CCFTCentral\MacroCommandLine.cs" />
+    <Compile Include="CCFTCentral\MacroSchedule.cs" />
+    <Compile Include="CCFTCentral\MessageAdapterPair.cs" />
+    <Compile Include="CCFTCentral\MiscellaneousIcon.cs" />
+    <Compile Include="CCFTCentral\Note.cs" />
+    <Compile Include="CCFTCentral\NotificationFilter.cs" />
+    <Compile Include="CCFTCentral\OPCDataBranch.cs" />
+    <Compile Include="CCFTCentral\OPCDataField.cs" />
+    <Compile Include="CCFTCentral\OPCDataVerb.cs" />
+    <Compile Include="CCFTCentral\Operator.cs" />
+    <Compile Include="CCFTCentral\OperatorClub.cs" />
+    <Compile Include="CCFTCentral\OperatorClubCompetencyAccessPair.cs" />
+    <Compile Include="CCFTCentral\OperatorClubDivision.cs" />
+    <Compile Include="CCFTCentral\OperatorClubMembershipPair.cs" />
+    <Compile Include="CCFTCentral\OperatorClubPDFAccessPair.cs" />
+    <Compile Include="CCFTCentral\OperatorClubPrivilegePair.cs" />
+    <Compile Include="CCFTCentral\OperatorClubWorkstationPair.cs" />
+    <Compile Include="CCFTCentral\OperatorExpiredPassword.cs" />
+    <Compile Include="CCFTCentral\OperatorPreference.cs" />
+    <Compile Include="CCFTCentral\OperatorPrivilege.cs" />
+    <Compile Include="CCFTCentral\OperatorSession.cs" />
+    <Compile Include="CCFTCentral\OperatorSiteRestriction.cs" />
+    <Compile Include="CCFTCentral\Output.cs" />
+    <Compile Include="CCFTCentral\Override.cs" />
+    <Compile Include="CCFTCentral\Panel.cs" />
+    <Compile Include="CCFTCentral\PanelListPanel.cs" />
+    <Compile Include="CCFTCentral\PersonalDataDate.cs" />
+    <Compile Include="CCFTCentral\PersonalDataField.cs" />
+    <Compile Include="CCFTCentral\PersonalDataImageID.cs" />
+    <Compile Include="CCFTCentral\PersonalDataInteger.cs" />
+    <Compile Include="CCFTCentral\PersonalDataString.cs" />
+    <Compile Include="CCFTCentral\PersonalDataStrList.cs" />
+    <Compile Include="CCFTCentral\PersonalisedAction.cs" />
+    <Compile Include="CCFTCentral\PhotoIDPrintingEventReason.cs" />
+    <Compile Include="CCFTCentral\Picture.cs" />
+    <Compile Include="CCFTCentral\PromptEntry.cs" />
+    <Compile Include="CCFTCentral\Property.cs" />
+    <Compile Include="CCFTCentral\Reception.cs" />
+    <Compile Include="CCFTCentral\ReflectIOPair.cs" />
+    <Compile Include="CCFTCentral\RelationshipInfo.cs" />
+    <Compile Include="CCFTCentral\RemoteElmo.cs" />
+    <Compile Include="CCFTCentral\RemoteFTItemField.cs" />
+    <Compile Include="CCFTCentral\RemoteOverrideCancelFlag.cs" />
+    <Compile Include="CCFTCentral\RemoteOverrideInfo.cs" />
+    <Compile Include="CCFTCentral\RemoteOverrideVerbInfo.cs" />
+    <Compile Include="CCFTCentral\ReportDescription.cs" />
+    <Compile Include="CCFTCentral\ReportScheduleTime.cs" />
+    <Compile Include="CCFTCentral\RequiredPrivilege.cs" />
+    <Compile Include="CCFTCentral\ReservedCardNumber.cs" />
+    <Compile Include="CCFTCentral\Role.cs" />
+    <Compile Include="CCFTCentral\SADPlugin.cs" />
+    <Compile Include="CCFTCentral\SaltoAccessTriplet.cs" />
+    <Compile Include="CCFTCentral\SaltoCard.cs" />
+    <Compile Include="CCFTCentral\SaltoServer.cs" />
+    <Compile Include="CCFTCentral\Schedule.cs" />
+    <Compile Include="CCFTCentral\ScheduleEntry.cs" />
+    <Compile Include="CCFTCentral\SessionOperatorAccess.cs" />
+    <Compile Include="CCFTCentral\SessionOperatorClub.cs" />
+    <Compile Include="CCFTCentral\SessionPermission.cs" />
+    <Compile Include="CCFTCentral\SharedBinary.cs" />
+    <Compile Include="CCFTCentral\SharedText.cs" />
+    <Compile Include="CCFTCentral\SingleControllerItem.cs" />
+    <Compile Include="CCFTCentral\SingleValue.cs" />
+    <Compile Include="CCFTCentral\SiteDefaultStateName.cs" />
+    <Compile Include="CCFTCentral\SiteItem.cs" />
+    <Compile Include="CCFTCentral\SiteNotifyPDF.cs" />
+    <Compile Include="CCFTCentral\SitePlan.cs" />
+    <Compile Include="CCFTCentral\SitePlanGraphic.cs" />
+    <Compile Include="CCFTCentral\SitePlanGraphicPoint.cs" />
+    <Compile Include="CCFTCentral\SitePlanLink.cs" />
+    <Compile Include="CCFTCentral\SitePlanTileConfig.cs" />
+    <Compile Include="CCFTCentral\SoftwareProcess.cs" />
+    <Compile Include="CCFTCentral\Sound.cs" />
+    <Compile Include="CCFTCentral\SpecialDay.cs" />
+    <Compile Include="CCFTCentral\StatusTile.cs" />
+    <Compile Include="CCFTCentral\StatusTileItem.cs" />
+    <Compile Include="CCFTCentral\TautWireSensor.cs" />
+    <Compile Include="CCFTCentral\Tile.cs" />
+    <Compile Include="CCFTCentral\TileItemRelationship.cs" />
+    <Compile Include="CCFTCentral\Timeout.cs" />
+    <Compile Include="CCFTCentral\UniversalCardFormat.cs" />
+    <Compile Include="CCFTCentral\UnnamedItemType.cs" />
+    <Compile Include="CCFTCentral\Viewer.cs" />
+    <Compile Include="CCFTCentral\ViewerPanel.cs" />
+    <Compile Include="CCFTCentral\ViewerPanelTile.cs" />
+    <Compile Include="CCFTCentral\ViewerPanelTileItemRelationship.cs" />
+    <Compile Include="CCFTCentral\Visit.cs" />
+    <Compile Include="CCFTCentral\VisitSegment.cs" />
+    <Compile Include="CCFTCentral\VisitVisitor.cs" />
+    <Compile Include="CCFTCentral\VisitVisitorAccessGroup.cs" />
+    <Compile Include="CCFTCentral\VisitVisitorAction.cs" />
+    <Compile Include="CCFTCentral\Wizard.cs" />
+    <Compile Include="CCFTCentral\WizardTemplate.cs" />
+    <Compile Include="CCFTCentral\Workstation.cs" />
+    <Compile Include="CCFTEvent\AlarmHistory.cs" />
+    <Compile Include="CCFTEvent\AlarmStack.cs" />
+    <Compile Include="CCFTEvent\AlarmUpdate.cs" />
+    <Compile Include="CCFTEvent\CardEvent.cs" />
+    <Compile Include="CCFTEvent\CCFTEvent.cs" />
+    <Compile Include="CCFTEvent\DVRData.cs" />
+    <Compile Include="CCFTEvent\Event.cs" />
+    <Compile Include="CCFTEvent\EventReturnToNormal.cs" />
+    <Compile Include="CCFTEvent\Image.cs" />
+    <Compile Include="CCFTEvent\Lookup.cs" />
+    <Compile Include="CCFTEvent\NotificationAlarm.cs" />
+    <Compile Include="CCFTEvent\OnlineArchiveFile.cs" />
+    <Compile Include="CCFTEvent\RelatedItem.cs" />
+    <Compile Include="CCFTEvent\SALTOLastEvent.cs" />
+    <Compile Include="CCFTEvent\Sequence.cs" />
+    <Compile Include="CCFTEvent\SingleValue.cs" />
+    <Compile Include="CCFTEvent\Trigger.cs" />
+    <Compile Include="CCFTEvent\TriggerSequenceLocation.cs" />
+    <Compile Include="CCFTEvent\TriggerSequencePair.cs" />
+    <Compile Include="CCFTEvent\UnlinkedAck.cs" />
+    <Compile Include="ContractorWiseReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContractorWiseReportForm.Designer.cs">
+      <DependentUpon>ContractorWiseReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EFERTDb\AlertInfo.cs" />
+    <Compile Include="EFERTDb\AppUser.cs" />
+    <Compile Include="EFERTDb\BlockedPersonInfo.cs" />
+    <Compile Include="EFERTDb\CadreInfo.cs" />
+    <Compile Include="EFERTDb\CardHolderInfo.cs" />
+    <Compile Include="EFERTDb\CheckInAndOutInfo.cs" />
+    <Compile Include="EFERTDb\CompanyInfo.cs" />
+    <Compile Include="EFERTDb\CrewInfo.cs" />
+    <Compile Include="EFERTDb\DailyCardHolder.cs" />
+    <Compile Include="EFERTDb\DepartmentInfo.cs" />
+    <Compile Include="EFERTDb\DesignationInfo.cs" />
+    <Compile Include="EFERTDb\EditableFields.cs" />
+    <Compile Include="EFERTDb\EFERTDbContext.cs" />
+    <Compile Include="EFERTDb\EFERTDbUtility.cs" />
+    <Compile Include="EFERTDb\EFERTInitializer.cs" />
+    <Compile Include="EFERTDb\EmailAddress.cs" />
+    <Compile Include="EFERTDb\SectionInfo.cs" />
+    <Compile Include="EFERTDb\SystemSetting.cs" />
+    <Compile Include="EFERTDb\VisitorCardHolder.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LMSAttendanceReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LMSAttendanceReportForm.Designer.cs">
+      <DependentUpon>LMSAttendanceReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportSelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportSelectorForm.Designer.cs">
+      <DependentUpon>ReportSelectorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplashScreen.Designer.cs">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ActivityReportForm.resx">
+      <DependentUpon>ActivityReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlarmedListReportForm.resx">
+      <DependentUpon>AlarmedListReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BannedEntryReportForm.resx">
+      <DependentUpon>BannedEntryReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CategoryWiseReportForm.resx">
+      <DependentUpon>CategoryWiseReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContractorWiseReportForm.resx">
+      <DependentUpon>ContractorWiseReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LMSAttendanceReportForm.resx">
+      <DependentUpon>LMSAttendanceReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ReportSelectorForm.resx">
+      <DependentUpon>ReportSelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Fonts\SEGOEUIL.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
