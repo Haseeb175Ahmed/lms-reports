@@ -124,11 +124,11 @@ namespace AttendanceReport
 
             if (extension == ".pdf")
             {
-                this.SaveAsPdf(this.mLstCardHolders, "Category Wise Report");
+                this.SaveAsPdf(this.mLstCardHolders, "Banned Worker Report");
             }
             else if (extension == ".xlsx")
             {
-                this.SaveAsExcel(this.mLstCardHolders, "Category Wise Report", "Category Wise Report");
+                this.SaveAsExcel(this.mLstCardHolders, "Banned Worker Report", "Banned Worker Report");
             }
         }
 
