@@ -49,6 +49,8 @@ namespace AttendanceReport
 
                 Dictionary<string, CardHolderReportInfo> cnicWiseReportInfo = new Dictionary<string, CardHolderReportInfo>();
 
+                List<string> checkinBeforeStartTimeLst = new List<string>();
+
                 this.mData = new Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>();
                 string filterByDepartment = this.cbxDepartments.Text;
                 string filterBySection = this.cbxSections.Text;
@@ -71,6 +73,96 @@ namespace AttendanceReport
                                                    select events).ToList();
 
                 //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
+
+                #region Dummy Events
+
+                //List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>() {
+                //     new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,07,45,44,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //       new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,08,42,44,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //    new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,09,43,20,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //     new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,10,03,20,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //     new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,10,15,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //       new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,11,58,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //        new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,1,15,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    },
+                //       new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,1,58,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 14716
+                //            }
+                //        }
+                //    }
+                //};
+
+                #endregion
+
+
+
                 List<int> inIds = new List<int>();
 
                 Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>> lstChlEvents = new Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>>();
@@ -294,6 +386,14 @@ namespace AttendanceReport
                                             Cadre = cadre
                                         });
                                     }
+                                    else
+                                    {
+                                        //user checkin before start time range list
+                                        if (TimeSpan.Compare(dateWiseCheckIn.DateTimeIn.TimeOfDay, thStartTime) < 0)
+                                        {
+                                            checkinBeforeStartTimeLst.Add(cnicNumber + "^" + date.ToString());
+                                        }
+                                    }
                                 }
                                 
                             }
@@ -408,9 +508,14 @@ namespace AttendanceReport
                                     if (cnicWiseReportInfo.ContainsKey(cnicNumber + "^" + date.ToString()))
                                     {
                                         CardHolderReportInfo reportInfo = cnicWiseReportInfo[cnicNumber + "^" + date.ToString()];
-
+                                        // Returns:
+                                        //     One of the following values.Value Description -1 t1 is shorter than t2. 0 t1
+                                        //     is equal to t2. 1 t1 is longer than t2.
                                         if (eventDateTime.TimeOfDay < reportInfo.OccurrenceTime.TimeOfDay)
                                         {
+                                            // Returns:
+                                            //     One of the following values.Value Description -1 t1 is shorter than t2. 0 t1
+                                            //     is equal to t2. 1 t1 is longer than t2.
                                             if (TimeSpan.Compare(eventDateTime.TimeOfDay, thStartTime) > 0 && TimeSpan.Compare(eventDateTime.TimeOfDay, thEndTime) <= 0)
                                             {
                                                 reportInfo.CardNumber = chl.LastName;
@@ -426,7 +531,15 @@ namespace AttendanceReport
                                     }
                                     else
                                     {
-                                        if (TimeSpan.Compare(eventDateTime.TimeOfDay, thStartTime) > 0 && TimeSpan.Compare(eventDateTime.TimeOfDay, thEndTime) <= 0)
+                                        // Returns:
+                                        //     One of the following values.Value Description -1 t1 is shorter than t2. 0 t1
+                                        //     is equal to t2. 1 t1 is longer than t2.
+
+                                        int startTimeresult = TimeSpan.Compare(eventDateTime.TimeOfDay, thStartTime);//
+
+                                        int endTimeresult = TimeSpan.Compare(eventDateTime.TimeOfDay, thEndTime);//
+
+                                        if (startTimeresult > 0 && endTimeresult <= 0)
                                         {
                                             cnicWiseReportInfo.Add(cnicNumber + "^" + date.ToString(), new CardHolderReportInfo()
                                             {
@@ -439,6 +552,17 @@ namespace AttendanceReport
                                                 Section = section,
                                                 Cadre = cadre
                                             });
+                                        }
+                                        else
+                                        {
+                                            //user checkin before start time range list
+                                            if (startTimeresult < 0)
+                                            {
+                                                if (!checkinBeforeStartTimeLst.Contains(cnicNumber + "^" + date.ToString()))
+                                                {
+                                                    checkinBeforeStartTimeLst.Add(cnicNumber + "^" + date.ToString());
+                                                }
+                                            }
                                         }                                        
                                     }
                                 }
@@ -452,6 +576,14 @@ namespace AttendanceReport
 
                 if (cnicWiseReportInfo != null && cnicWiseReportInfo.Keys.Count > 0)
                 {
+                    for (int i = 0; i < checkinBeforeStartTimeLst.Count; i++)
+                    {
+                        if (cnicWiseReportInfo.ContainsKey(checkinBeforeStartTimeLst[i])) {
+                            cnicWiseReportInfo.Remove(checkinBeforeStartTimeLst[i]);
+                        }
+                    }
+
+
                     this.mData = new Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>();
 
                     foreach (KeyValuePair<string, CardHolderReportInfo> reportInfo in cnicWiseReportInfo)

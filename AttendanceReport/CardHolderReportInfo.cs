@@ -10,6 +10,8 @@ namespace AttendanceReport
     {
         public string CardNumber { get; set; }
 
+        public int TotalDaysCkekin { get; set; }
+
         public DateTime OccurrenceTime { get; set; }
 
         public string FirstName { get; set; }

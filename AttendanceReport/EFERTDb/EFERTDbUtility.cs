@@ -103,7 +103,7 @@ namespace AttendanceReport
             return message;
         }
                 
-        public static LimitStatus CheckIfUserCheckedInLimitReached(List<CheckInAndOutInfo> checkIns, List<BlockedPersonInfo> blocks, bool sendEmail = true)
+        public static LimitStatus CheckIfUserCheckedInLimitReached(List<CheckInAndOutInfo> checkIns, List<BlockedPersonInfo> blocks, ref int refCheckinCount, bool sendEmail = true)
         {
             LimitStatus limitStatus = LimitStatus.Allowed;
             SystemSetting setting = EFERTDbUtility.mEFERTDb.SystemSetting.FirstOrDefault();
@@ -223,6 +223,8 @@ namespace AttendanceReport
 
                             previousDateTimeIn = currDateTimeIn;
                         }
+
+                        refCheckinCount = count;
 
                         if (count >= daysToEmailNotification)
                         {
