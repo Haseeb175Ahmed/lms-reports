@@ -83,7 +83,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -93,7 +93,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -103,7 +103,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -113,7 +113,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -123,7 +123,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -133,7 +133,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -143,7 +143,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    },
@@ -153,7 +153,7 @@ namespace AttendanceReport
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 14716
+                //                FTItemID = 1018
                 //            }
                 //        }
                 //    }
@@ -182,7 +182,7 @@ namespace AttendanceReport
                     {
                         if (relatedItem != null)
                         {
-                            if (relatedItem.RelationCode == 0)
+                            if (relatedItem.RelationCode == 0)//human
                             {
                                 if (events.EventType == 20001)//In Events
                                 {
@@ -224,13 +224,13 @@ namespace AttendanceReport
 
                 List<string> strLstTempCards = (from chl in inCardHolders
                                                 where chl.Value != null && (chl.Value.FirstName.ToLower().StartsWith("t-") || chl.Value.FirstName.ToLower().StartsWith("v-") || chl.Value.FirstName.ToLower().StartsWith("temporary-") || chl.Value.FirstName.ToLower().StartsWith("visitor-"))
-                                                select chl.Value.LastName).ToList();
+                                                select chl.Value.LastName).ToList();              
 
                 //MessageBox.Show(this, "Temp Cards found: " + strLstTempCards.Count);
 
                 List<CheckInAndOutInfo> filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
                                                             where checkin != null && !checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
-                                                                strLstTempCards.Contains(checkin.CardNumber) &&
+                                                            strLstTempCards.Contains(checkin.CardNumber) &&
                                                                 (string.IsNullOrEmpty(filterByDepartment) ||
                                                                     ((checkin.CardHolderInfos != null &&
                                                                     checkin.CardHolderInfos.Department != null &&
@@ -273,7 +273,7 @@ namespace AttendanceReport
                                                                     (checkin.DailyCardHolders != null &&
                                                                     checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
                                                                     (checkin.Visitors != null &&
-                                                                    checkin.Visitors.CNICNumber == filterByCNIC))) &&
+                                                                    checkin.Visitors.CNICNumber == filterByCNIC))) &&                                                                   
                                                                 (string.IsNullOrEmpty(filterByPnumber) ||
                                                                     ((checkin.CardHolderInfos != null &&
                                                                     checkin.CardHolderInfos.PNumber == filterByPnumber))) &&
@@ -440,7 +440,7 @@ namespace AttendanceReport
                             }
 
                             //Filter By Cadre
-                            if (string.IsNullOrEmpty(cadre) || !string.IsNullOrEmpty(filterByCadre) && section.ToLower() != filterByCadre.ToLower())
+                            if (string.IsNullOrEmpty(cadre) || !string.IsNullOrEmpty(filterByCadre) && cadre.ToLower() != filterByCadre.ToLower())
                             {
                                 continue;
                             }

@@ -423,6 +423,7 @@
     <Compile Include="EFERTDb\BlockedPersonInfo.cs" />
     <Compile Include="EFERTDb\CadreInfo.cs" />
     <Compile Include="EFERTDb\CardHolderInfo.cs" />
+    <Compile Include="EFERTDb\CategoryInfo.cs" />
     <Compile Include="EFERTDb\CheckInAndOutInfo.cs" />
     <Compile Include="EFERTDb\CompanyInfo.cs" />
     <Compile Include="EFERTDb\CrewInfo.cs" />
