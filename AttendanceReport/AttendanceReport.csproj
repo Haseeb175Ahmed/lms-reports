@@ -437,6 +437,7 @@
     <Compile Include="EFERTDb\EmailAddress.cs" />
     <Compile Include="EFERTDb\SectionInfo.cs" />
     <Compile Include="EFERTDb\SystemSetting.cs" />
+    <Compile Include="EFERTDb\Users.cs" />
     <Compile Include="EFERTDb\VisitorCardHolder.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -444,6 +445,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="LMSAttendanceReportForm.cs">
       <SubType>Form</SubType>
     </Compile>

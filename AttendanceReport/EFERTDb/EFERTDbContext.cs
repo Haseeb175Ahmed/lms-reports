@@ -46,6 +46,8 @@ namespace AttendanceReport.EFERTDb
 
         public DbSet<CategoryInfo> CategoryInfo { get; set; }
 
+        public DbSet<Users> Users { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VisitorCardHolder>().Property(p => p.Picture).HasColumnType("image");

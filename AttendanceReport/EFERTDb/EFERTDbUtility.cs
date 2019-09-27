@@ -46,6 +46,29 @@ namespace AttendanceReport
                 mVisitingLocations = (from visitLocation in mEFERTDb.VisitingLocations
                                       where visitLocation != null
                                       select visitLocation).ToList();
+
+                 List<Users> users = (from user1 in EFERTDbUtility.mEFERTDb.Users
+                                       where user1 != null
+                                       select user1).ToList();
+                if (users == null || users.Count == 0)
+                {
+                    string userPasword = Helper.EncryptString("efert123#@!",
+                  Helper.CONST_ENC_PASSPHRASE,
+                  Helper.CONST_ENC_SALT_VALUE,
+                  Helper.CONST_ENC_HASH_ALGO,
+                  Helper.CONST_ENC_PASSWORD_ITERATION,
+                  Helper.CONST_ENC_INIT_VECTOR,
+                  Helper.CONST_ENC_KEY_SIZE);
+
+                    Users user = new Users()
+                    {
+                        Name = "Admin",
+                        Password = userPasword,
+                        Role = "Admin"
+                    };
+                    EFERTDbUtility.mEFERTDb.Users.Add(user);
+                    EFERTDbUtility.mEFERTDb.SaveChanges();
+                }
             }
             catch (Exception e)
             {
