@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+
 
 namespace AttendanceReport
 {
@@ -29,7 +31,26 @@ namespace AttendanceReport
 
     public enum UserRole
     {
-        Normal = 01,
+        User = 01,
         Admin = 03,
+        SiteAdmin = 05
+    }
+
+    [Serializable]
+    [DataContract]
+    public class UserInfoExtended
+    {
+        [DataMember]
+        public UserStatus UserStatus { get; set; }
+        [DataMember]
+        public DateTime? PasswordChangeDate { get; set; }
+        [DataMember]
+        public DateTime? UserActiveDate { get; set; }
+    }
+
+    public enum UserStatus
+    {
+        Enabled = 01,
+        Disabled = 03
     }
 }

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace AttendanceReport
 {
@@ -16,34 +17,7 @@ namespace AttendanceReport
     {
         public static LoginForm mMainForm = null;
         public static AppUser mLoggedInUser = null;
-
-        private List<AppUser> mUsers = new List<AppUser>()
-        {
-            new AppUser()
-            {
-                UserName = "Admin",
-                Password = "efert123#@!",
-                IsAdmin = true
-            },
-            new AppUser()
-            {
-                UserName = "user",
-                Password = "Engro786",
-                IsAdmin = true
-            },
-            new AppUser()
-            {
-                UserName = "Guest1",
-                Password = "Engro786",
-                IsAdmin = true
-            },
-            new AppUser()
-            {
-                UserName = "Guest2",
-                Password = "Engro786",
-                IsAdmin = true
-            }
-        };
+      
 
         public LoginForm()
         {
@@ -81,9 +55,11 @@ namespace AttendanceReport
 
                     mLoggedInUser = new AppUser()
                     {
+                        UserId=user.UserId,
                         UserName = user.Name,
                         Password = password,
-                        IsAdmin = user.Role == UserRole.Admin.ToString() ? true : false
+                        IsAdmin = user.Role == UserRole.Admin.ToString() ? true : false,
+                        Role = user.Role
                     };
 
                     loggedInUser = user;
@@ -105,6 +81,23 @@ namespace AttendanceReport
             }
             else
             {
+
+                UserInfoExtended userInfoExtended = null;
+
+                if (!string.IsNullOrEmpty(loggedInUser.CustomData))
+                {
+                    userInfoExtended = JsonConvert.DeserializeObject<UserInfoExtended>(loggedInUser.CustomData);
+
+                    if (userInfoExtended != null)
+                    {
+
+                        if (userInfoExtended.UserStatus == UserStatus.Disabled)
+                        {
+                            MessageBox.Show("Your account disabled please contact your administrator.");
+                            return;
+                        }
+                    }
+                }
 
                 DateTime result;
                 bool updateDate = false;
@@ -129,8 +122,30 @@ namespace AttendanceReport
 
                     if (t.TotalDays > 60)
                     {
-                        MessageBox.Show("Your account freezed please contact your administrator.");
-                        return;
+                        if (loggedInUser.Role != UserRole.Admin.ToString())
+                        {
+                            if (userInfoExtended != null)
+                            {
+                                if (userInfoExtended.UserStatus != UserStatus.Disabled)
+                                {
+                                    try
+                                    {
+                                        userInfoExtended.UserStatus = UserStatus.Disabled;
+                                        loggedInUser.CustomData = JsonConvert.SerializeObject(userInfoExtended);
+                                        EFERTDbUtility.mEFERTDb.Entry(loggedInUser).State = System.Data.Entity.EntityState.Modified;
+                                        EFERTDbUtility.mEFERTDb.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        EFERTDbUtility.RollBack();
+                                    }
+                                }
+                            }
+
+                            MessageBox.Show("Your account disabled because you have not logged in since last 60 days please contact your administrator.");
+                            return;
+                        }
+
                     }
                     else
                     {
@@ -150,7 +165,19 @@ namespace AttendanceReport
                 {
                     try
                     {
+                        if (loggedInUser.Role == "Normal")
+                        {
+                            loggedInUser.Role = UserRole.User.ToString();
+                        }
 
+                        if (string.IsNullOrEmpty(loggedInUser.CustomData))
+                        {
+                            UserInfoExtended extended = new UserInfoExtended();
+                            extended.UserActiveDate = DateTime.Now;
+                            extended.UserStatus = UserStatus.Enabled;
+                            string str = JsonConvert.SerializeObject(extended);
+                            loggedInUser.CustomData = str;
+                        }
                         loggedInUser.LastLoginDate = result;
                         EFERTDbUtility.mEFERTDb.Entry(loggedInUser).State = System.Data.Entity.EntityState.Modified;
                         EFERTDbUtility.mEFERTDb.SaveChanges();
