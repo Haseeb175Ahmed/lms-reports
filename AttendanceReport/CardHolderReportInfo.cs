@@ -63,6 +63,7 @@ namespace AttendanceReport
         public DateTime MinCallOutInTime { get; set; }
 
         public DateTime MaxCallOutOutTime { get; set; }
+        public string LateTime { get; set; }
 
         public string EventType { get; set; }
 

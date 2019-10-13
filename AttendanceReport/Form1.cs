@@ -24,8 +24,8 @@ namespace AttendanceReport
 {
     public partial class Form1 : Form
     {
-        public Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>> mData = null;
-
+        
+        List<CardHolderReportInfo> lstCardHolderReportInfo = null;
         public Form1()
         {
             InitializeComponent();
@@ -40,7 +40,8 @@ namespace AttendanceReport
             {
 
                 Cursor.Current = Cursors.WaitCursor;
-                this.mData = null;
+                
+                lstCardHolderReportInfo = new List<CardHolderReportInfo>();
 
                 DateTime fromDate = this.dtpFromDate.Value.Date;
                 DateTime fromDateUtc = fromDate.ToUniversalTime();
@@ -51,7 +52,7 @@ namespace AttendanceReport
 
                 List<string> checkinBeforeStartTimeLst = new List<string>();
 
-                this.mData = new Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>();
+              
                 string filterByDepartment = this.cbxDepartments.Text;
                 string filterBySection = this.cbxSections.Text;
                 string filerByName = this.tbxName.Text;
@@ -72,98 +73,129 @@ namespace AttendanceReport
                                                        events.OccurrenceTime < toDateUtc
                                                    select events).ToList();
 
-                //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
+                                                   //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
 
-                #region Dummy Events
+                                                   #region Dummy Events
 
-                //List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>() {
+                //List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>()
+                //{
+                //         new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,11,09,50,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
+                //             new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,10,09,40,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
+                //                 new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,07,09,45,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
+                //                     new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,07,08,43,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
+                //           new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,07,09,42,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 14716
+                //                }
+                //            }
+                //        },
+                //    new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,10,07,09,43,20,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 10864
+                //            }
+                //        }
+                //    },
                 //     new CCFTEvent.Event() {
                 //        EventType = 20001,
-                //        OccurrenceTime = new DateTime(2019,09,26,09,45,44,DateTimeKind.Utc),
+                //        OccurrenceTime = new DateTime(2018,10,08,09,03,20,DateTimeKind.Utc),
                 //        RelatedItems = new List<RelatedItem>() {
                 //            new RelatedItem() {
                 //                RelationCode = 0,
-                //                FTItemID = 1046
+                //                FTItemID = 8288
                 //            }
                 //        }
                 //    },
-                //       new CCFTEvent.Event() {
-                //        EventType = 20003,
-                //        OccurrenceTime = new DateTime(2019,09,26,08,42,44,DateTimeKind.Utc),
-                //        RelatedItems = new List<RelatedItem>() {
-                //            new RelatedItem() {
-                //                RelationCode = 0,
-                //                FTItemID = 1046
-                //            }
-                //        }
-                //    },
-                //new CCFTEvent.Event() {
-                //    EventType = 20001,
-                //    OccurrenceTime = new DateTime(2018,09,16,09,43,20,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                // new CCFTEvent.Event() {
-                //    EventType = 20003,
-                //    OccurrenceTime = new DateTime(2018,09,16,10,03,20,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                // new CCFTEvent.Event() {
-                //    EventType = 20001,
-                //    OccurrenceTime = new DateTime(2018,09,16,10,15,09,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                //   new CCFTEvent.Event() {
-                //    EventType = 20003,
-                //    OccurrenceTime = new DateTime(2018,09,16,11,58,09,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                //    new CCFTEvent.Event() {
-                //    EventType = 20001,
-                //    OccurrenceTime = new DateTime(2018,09,16,1,15,09,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                //   new CCFTEvent.Event() {
-                //    EventType = 20003,
-                //    OccurrenceTime = new DateTime(2018,09,16,1,58,09,DateTimeKind.Utc),
-                //    RelatedItems = new List<RelatedItem>() {
-                //        new RelatedItem() {
-                //            RelationCode = 0,
-                //            FTItemID = 1046
-                //        }
-                //    }
-                //},
-                //  };
+                    // new CCFTEvent.Event() {
+                    //    EventType = 20001,
+                    //    OccurrenceTime = new DateTime(2018,09,16,10,15,09,DateTimeKind.Utc),
+                    //    RelatedItems = new List<RelatedItem>() {
+                    //        new RelatedItem() {
+                    //            RelationCode = 0,
+                    //            FTItemID = 1046
+                    //        }
+                    //    }
+                    //},
+                    //   new CCFTEvent.Event() {
+                    //    EventType = 20003,
+                    //    OccurrenceTime = new DateTime(2018,09,16,11,58,09,DateTimeKind.Utc),
+                    //    RelatedItems = new List<RelatedItem>() {
+                    //        new RelatedItem() {
+                    //            RelationCode = 0,
+                    //            FTItemID = 1046
+                    //        }
+                    //    }
+                    //},
+                    //    new CCFTEvent.Event() {
+                    //    EventType = 20001,
+                    //    OccurrenceTime = new DateTime(2018,09,16,1,15,09,DateTimeKind.Utc),
+                    //    RelatedItems = new List<RelatedItem>() {
+                    //        new RelatedItem() {
+                    //            RelationCode = 0,
+                    //            FTItemID = 1046
+                    //        }
+                    //    }
+                    //},
+                    //   new CCFTEvent.Event() {
+                    //    EventType = 20003,
+                    //    OccurrenceTime = new DateTime(2018,09,16,1,58,09,DateTimeKind.Utc),
+                    //    RelatedItems = new List<RelatedItem>() {
+                    //        new RelatedItem() {
+                    //            RelationCode = 0,
+                    //            FTItemID = 1046
+                    //        }
+                    //    }
+                    //},
+                  //   };
 
-                #endregion
+                    #endregion
 
 
 
-                List<int> inIds = new List<int>();
+                    List<int> inIds = new List<int>();
                 //date and ftitemid of person an thier event entries
                 Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>> lstChlEvents = new Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>>();
 
@@ -230,63 +262,122 @@ namespace AttendanceReport
 
             List<CheckInAndOutInfo> filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
                                                         where checkin != null && !checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
-                                                        strLstTempCards.Contains(checkin.CardNumber) &&
-                                                            (string.IsNullOrEmpty(filterByDepartment) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.Department != null &&
-                                                                checkin.CardHolderInfos.Department.DepartmentName.ToLower() == filterByDepartment) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                checkin.DailyCardHolders.Department.ToLower() == filterByDepartment))) &&
-                                                            (string.IsNullOrEmpty(filterBySection) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.Section != null &&
-                                                                checkin.CardHolderInfos.Section.SectionName.ToLower() == filterBySection) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                checkin.DailyCardHolders.Section.ToLower() == filterBySection))) &&
-                                                            (string.IsNullOrEmpty(filerByName) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)) ||
-                                                                (checkin.Visitors != null &&
-                                                                checkin.Visitors.FirstName.ToLower().Contains(filerByName)))) &&
-                                                            (string.IsNullOrEmpty(filterByCadre) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.Cadre != null &&
-                                                                checkin.CardHolderInfos.Cadre.CadreName.ToLower() == filterByCadre) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                checkin.DailyCardHolders.Cadre.ToLower() == filterByCadre))) &&
-                                                            (string.IsNullOrEmpty(filterByCompany) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.Company != null &&
-                                                                !string.IsNullOrEmpty(checkin.CardHolderInfos.Company.CompanyName) &&
-                                                                checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                !string.IsNullOrEmpty(checkin.DailyCardHolders.CompanyName) &&
-                                                                checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany) ||
-                                                                (checkin.Visitors != null &&
-                                                                !string.IsNullOrEmpty(checkin.Visitors.CompanyName) &&
-                                                                checkin.Visitors.CompanyName.ToLower() == filterByCompany))) &&
-                                                            (string.IsNullOrEmpty(filterByCNIC) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
-                                                                (checkin.DailyCardHolders != null &&
-                                                                checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
-                                                                (checkin.Visitors != null &&
-                                                                checkin.Visitors.CNICNumber == filterByCNIC))) &&
-                                                            (string.IsNullOrEmpty(filterByPnumber) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.PNumber == filterByPnumber))) &&
-                                                            (string.IsNullOrEmpty(filterByCrew) ||
-                                                                ((checkin.CardHolderInfos != null &&
-                                                                checkin.CardHolderInfos.Crew != null &&
-                                                                checkin.CardHolderInfos.Crew.CrewName == filterByCrew)))
+                                                        strLstTempCards.Contains(checkin.CardNumber)                                                   
                                                         select checkin).ToList();
 
+                if (!string.IsNullOrEmpty(filterByCNIC))
+                {
+                    filteredCheckIns = (from checkin in filteredCheckIns
+                                        where checkin != null && ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
+                                                                    (checkin.Visitors != null &&
+                                                                    checkin.Visitors.CNICNumber == filterByCNIC))
+                                        select checkin).ToList();
+                }
+                else if (!string.IsNullOrEmpty(filerByName))
+                {
+                    filerByName = filerByName.ToLower();
+                    filteredCheckIns = (from checkin in filteredCheckIns
+                                        where checkin != null && ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)) ||
+                                                                    (checkin.Visitors != null &&
+                                                                    checkin.Visitors.FirstName.ToLower().Contains(filerByName)))
+                                        select checkin).ToList();
+                }
+                else if (!string.IsNullOrEmpty(filterByCardNumber))
+                {
+                    filteredCheckIns = (from checkin in filteredCheckIns
+                                        where checkin != null && checkin.CardHolderInfos != null && checkin.CardHolderInfos.CardNumber == filterByCardNumber
+                                        select checkin).ToList();
+                }
+                else if (!string.IsNullOrEmpty(filterByPnumber))
+                {
+                    filteredCheckIns = (from checkin in filteredCheckIns
+                                        where checkin != null && checkin.CardHolderInfos != null && checkin.CardHolderInfos.PNumber == filterByPnumber
+                                        select checkin).ToList();
+                }
+                else
+                {
 
-            //MessageBox.Show(this, "Filtered Checkins: " + filteredCheckIns.Count);
+                    
+                    if (!string.IsNullOrEmpty(filterBySection))
+                    {
+                        filterBySection = filterBySection.ToLower();
 
-            foreach (KeyValuePair<DateTime, Dictionary<int, List<CCFTEvent.Event>>> inEvent in lstChlEvents)
+                        filteredCheckIns = (from checkin in filteredCheckIns
+                                            where checkin != null &&
+                                 ((checkin.CardHolderInfos != null &&
+                                 checkin.CardHolderInfos.Section != null &&
+                                 checkin.CardHolderInfos.Section.SectionName.ToLower() == filterBySection) ||
+                                 (checkin.DailyCardHolders != null &&
+                                 checkin.DailyCardHolders.Section.ToLower() == filterBySection))
+                                            select checkin).ToList();
+                    }
+
+
+                    if (!string.IsNullOrEmpty(filterByCadre))
+                    {
+                        filterByCadre = filterByCadre.ToLower();
+                        filteredCheckIns = (from checkin in filteredCheckIns
+                                            where checkin != null &&
+                                 ((checkin.CardHolderInfos != null &&
+                                 checkin.CardHolderInfos.Cadre != null &&
+                                 checkin.CardHolderInfos.Cadre.CadreName.ToLower() == filterByCadre) ||
+                                 (checkin.DailyCardHolders != null &&
+                                 checkin.DailyCardHolders.Cadre.ToLower() == filterByCadre))
+                                            select checkin).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(filterByCrew))
+                    {
+                        filterByCrew = filterByCrew.ToLower();
+                        filteredCheckIns = (from checkin in filteredCheckIns
+                                            where checkin != null &&
+                                 ((checkin.CardHolderInfos != null &&
+                                 checkin.CardHolderInfos.Crew != null &&
+                                 checkin.CardHolderInfos.Crew.CrewName.ToLower() == filterByCrew))
+                                            select checkin).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(filterByDepartment))
+                    {
+                        filterByDepartment = filterByDepartment.ToLower();
+                        filteredCheckIns = (from checkin in filteredCheckIns
+                                            where checkin != null &&
+                                 ((checkin.CardHolderInfos != null &&
+                                 checkin.CardHolderInfos.Department != null &&
+                                 checkin.CardHolderInfos.Department.DepartmentName.ToLower() == filterByDepartment) ||
+                                 (checkin.DailyCardHolders != null &&
+                                 checkin.DailyCardHolders.Department.ToLower() == filterByDepartment))
+                                            select checkin).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(filterByCompany))
+                    {
+                        filterByCompany = filterByCompany.ToLower();
+                        filteredCheckIns = (from checkin in filteredCheckIns
+                                            where checkin != null &&
+                                 ((checkin.CardHolderInfos != null &&
+                                 checkin.CardHolderInfos.Company != null &&
+                                 !string.IsNullOrEmpty(checkin.CardHolderInfos.Company.CompanyName) &&
+                                 checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
+                                 (checkin.DailyCardHolders != null &&
+                                 !string.IsNullOrEmpty(checkin.DailyCardHolders.CompanyName) &&
+                                 checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany) ||
+                                 (checkin.Visitors != null &&
+                                 !string.IsNullOrEmpty(checkin.Visitors.CompanyName) &&
+                                 checkin.Visitors.CompanyName.ToLower() == filterByCompany))
+                                            select checkin).ToList();
+                    }
+
+                }
+                //MessageBox.Show(this, "Filtered Checkins: " + filteredCheckIns.Count);
+
+                foreach (KeyValuePair<DateTime, Dictionary<int, List<CCFTEvent.Event>>> inEvent in lstChlEvents)
                 {
                     DateTime date = inEvent.Key;
                     if (inEvent.Value == null)
@@ -427,49 +518,14 @@ namespace AttendanceReport
                             company = string.IsNullOrEmpty(company) ? "Unknown" : company;
                             crew = string.IsNullOrEmpty(crew) ? "Unknown" : crew;
 
-                            //Filter By Department
-                            if (string.IsNullOrEmpty(department) || !string.IsNullOrEmpty(filterByDepartment) && department.ToLower() != filterByDepartment.ToLower())
-                            {
-                                continue;
-                            }
-
-                            //Filter By Section
-                            if (string.IsNullOrEmpty(section) || !string.IsNullOrEmpty(filterBySection) && section.ToLower() != filterBySection.ToLower())
-                            {
-                                continue;
-                            }
-
-                            //Filter By Cadre
-                            if (string.IsNullOrEmpty(cadre) || !string.IsNullOrEmpty(filterByCadre) && cadre.ToLower() != filterByCadre.ToLower())
-                            {
-                                continue;
-                            }
-
-                            //Filter By Company
-                            if (!string.IsNullOrEmpty(filterByCompany) && company.ToLower() != filterByCompany.ToLower())
-                            {
-                                continue;
-                            }
-
                             //Filter By CNIC 31303-4961345-5
-                            if (string.IsNullOrEmpty(cnicNumber) || !string.IsNullOrEmpty(filterByCNIC) && cnicNumber != filterByCNIC)
+                            if (!string.IsNullOrEmpty(filterByCNIC) && cnicNumber != filterByCNIC)
                             {
                                 continue;
                             }
 
                             //Filter By Name
                             if (!string.IsNullOrEmpty(filerByName) && !chl.FirstName.ToLower().Contains(filerByName.ToLower()))
-                            {
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(filterByPnumber) && strPnumber != filterByPnumber)
-                            {
-                                continue;
-                            }
-
-                            //Filter By Crew
-                            if (!string.IsNullOrEmpty(filterByCrew) && crew != filterByCrew)
                             {
                                 continue;
                             }
@@ -493,6 +549,44 @@ namespace AttendanceReport
                                     continue;
                                 }
 
+                            }
+
+                            if (!string.IsNullOrEmpty(filterByPnumber) && strPnumber != filterByPnumber)
+                            {
+                                continue;
+                            }
+
+
+                            
+
+                            //Filter By Section
+                            if (!string.IsNullOrEmpty(filterBySection) && section.ToLower() != filterBySection.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Cadre
+                            if (!string.IsNullOrEmpty(filterByCadre) && cadre.ToLower() != filterByCadre.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Crew
+                            if (!string.IsNullOrEmpty(filterByCrew) && crew != filterByCrew)
+                            {
+                                continue;
+                            }
+
+                            //Filter By Department
+                            if (!string.IsNullOrEmpty(filterByDepartment) && department.ToLower() != filterByDepartment.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Company
+                            if (!string.IsNullOrEmpty(filterByCompany) && company.ToLower() != filterByCompany.ToLower())
+                            {
+                                continue;
                             }
 
                             DateTime minInTime = DateTime.MaxValue;
@@ -584,427 +678,17 @@ namespace AttendanceReport
                     }
 
 
-                    this.mData = new Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>();
-
                     foreach (KeyValuePair<string, CardHolderReportInfo> reportInfo in cnicWiseReportInfo)
                     {
                         if (reportInfo.Value == null)
                         {
                             continue;
                         }
-                        CardHolderReportInfo report = reportInfo.Value;
 
-                        string department = report.Department;
-                        string section = report.Section;
-                        string cadre = report.Cadre;
-
-                        if (this.mData.ContainsKey(department))
-                        {
-                            if (this.mData[department].ContainsKey(section))
-                            {
-                                if (this.mData[department][section].ContainsKey(cadre))
-                                {
-                                    this.mData[department][section][cadre].Add(report);
-                                    this.mData[department][section][cadre].Sort((x, y) => DateTime.Compare(x.OccurrenceTime.Date, y.OccurrenceTime.Date));
-                                }
-                                else
-                                {
-                                    this.mData[department][section].Add(cadre, new List<CardHolderReportInfo>() { report });
-                                }
-                            }
-                            else
-                            {
-                                Dictionary<string, List<CardHolderReportInfo>> cadreWiseList = new Dictionary<string, List<CardHolderReportInfo>>();
-                                cadreWiseList.Add(cadre, new List<CardHolderReportInfo>() { report });
-                                this.mData[department].Add(section, cadreWiseList);
-                            }
-                        }
-                        else
-                        {
-
-                            Dictionary<string, List<CardHolderReportInfo>> cadreWiseList = new Dictionary<string, List<CardHolderReportInfo>>();
-                            cadreWiseList.Add(cadre, new List<CardHolderReportInfo>() { report });
-
-                            Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>> sectionWiseReport = new Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>();
-                            sectionWiseReport.Add(section, cadreWiseList);
-
-                            this.mData.Add(department, sectionWiseReport);
-                        }
+                        lstCardHolderReportInfo.Add(reportInfo.Value);                       
                     }
                 }
-
-                #region Old logic
-                //Cursor currentCursor = Cursor.Current;
-                //try
-                //{
-
-                //    Cursor.Current = Cursors.WaitCursor;
-                //    this.mData = null;
-
-                //    DateTime fromDate = this.dtpFromDate.Value.Date.ToUniversalTime();
-                //    DateTime toDate = this.dtpToDate.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59).ToUniversalTime();
-
-
-
-
-                //    CCFTEvent.CCFTEvent ccftEvent = EFERTDbUtility.mCCFTEvent;
-
-                //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
-                //    List<int> ids = new List<int>();
-
-
-
-                //    #region Events
-
-                //    List<CCFTEvent.Event> lstEvents = (from events in ccftEvent.Events
-                //                                       where
-                //                                           events != null && events.EventType == 20001 &&
-                //                                           events.OccurrenceTime >= fromDate &&
-                //                                           events.OccurrenceTime < toDate
-                //                                       select events).ToList();
-
-
-
-                //    Dictionary<DateTime,Dictionary<int, DateTime>> lstChlEvents = new Dictionary<DateTime, Dictionary<int, DateTime>>();
-                //    Dictionary<int, DateTime> dayWiseEvents = null;
-
-                //    //MessageBox.Show("Events Found: " + lstEvents.Count);
-                //    foreach (CCFTEvent.Event events in lstEvents)
-                //    {
-                //        if (events == null || events.RelatedItems == null)
-                //        {
-                //            continue;
-                //        }
-
-                //        foreach (RelatedItem relatedItem in events.RelatedItems)
-                //        {
-                //            if (relatedItem != null && relatedItem.RelationCode == 0)
-                //            {
-                //                ids.Add(relatedItem.FTItemID);
-
-                //                if (lstChlEvents.ContainsKey(events.OccurrenceTime.Date))
-                //                {
-                //                    dayWiseEvents = lstChlEvents[events.OccurrenceTime.Date];
-
-                //                    if (dayWiseEvents.ContainsKey(relatedItem.FTItemID))
-                //                    {
-                //                        DateTime occurranceTime = dayWiseEvents[relatedItem.FTItemID];
-
-                //                        if (occurranceTime > events.OccurrenceTime)
-                //                        {
-                //                            dayWiseEvents[relatedItem.FTItemID] = events.OccurrenceTime;
-                //                        }
-
-                //                    }
-                //                    else
-                //                    {
-                //                        dayWiseEvents.Add(relatedItem.FTItemID, events.OccurrenceTime);
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    dayWiseEvents = new Dictionary<int, DateTime>();
-                //                    dayWiseEvents.Add(relatedItem.FTItemID, events.OccurrenceTime);
-
-                //                    lstChlEvents.Add(events.OccurrenceTime.Date, dayWiseEvents);
-                //                }
-                //            }
-                //        }
-                //    }
-                //    #endregion
-
-                //    #region CHL
-                //    //List<CardholderLocation> cardHolderLocations = (from cardHolder in ccftCentral.CardholderLocations
-                //    //                                                where
-                //    //                                                   cardHolder != null &&
-                //    //                                                   cardHolder.AccessTime >= fromDate &&
-                //    //                                                   cardHolder.AccessTime < toDate &&
-                //    //                                                   cardHolder.AccessType == 1
-                //    //                                                select cardHolder).ToList();
-
-
-                //    //ids = (from chl in cardHolderLocations
-                //    //                 where chl != null
-                //    //                 select chl.CardholderID).ToList();
-                //    #endregion
-
-                //    //MessageBox.Show("Ids Found: " + lstEvents.Count);
-
-                //    List<Card> cards = (from card in ccftCentral.Cards
-                //                        where card != null && ids.Contains(card.CardholderID)
-                //                        select card).Distinct().ToList();
-
-                //    #region CHL
-                //    //List<Cardholder> cardHolders = (from card in cards
-                //    //                                where card != null
-                //    //                                select card.Cardholder).ToList();
-
-                //    //Dictionary<int, CardholderLocation> filteredChls =
-                //    //                            new Dictionary<int, CardholderLocation>();
-
-                //    //foreach (CardholderLocation chl in cardHolderLocations)
-                //    //{
-                //    //    if (filteredChls.ContainsKey(chl.CardholderID))
-                //    //    {
-                //    //        CardholderLocation chlExist = filteredChls[chl.CardholderID];
-
-                //    //        if (chlExist.AccessTime > chl.AccessTime)
-                //    //        {
-                //    //            filteredChls[chl.CardholderID] = chl;
-                //    //        }
-
-                //    //    }
-                //    //    else
-                //    //    {
-                //    //        filteredChls.Add(chl.CardholderID, chl);
-                //    //    }
-                //    //}
-                //    #endregion
-
-                //    this.mData = new Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>();
-                //    string filterByDepartment = this.cbxDepartments.Text;
-                //    string filterBySection = this.cbxSections.Text;
-                //    string filerByName = this.tbxName.Text;
-                //    string filterByPNumber = this.tbxPNumber.Text;
-                //    string filterByCardNumber = this.tbxCarNumber.Text;
-                //    string filterByCrew = this.cbxCrew.Text;
-                //    string filterByCadre = this.cbxCadre.Text;
-                //    string filterByCompany = this.cbxCompany.Text;
-                //    string filterByCNIC = this.tbxCnic.Text;
-
-                //    #region CHL
-                //    //foreach (KeyValuePair<int, CardholderLocation> chlEvent in filteredChls)
-                //    #endregion
-                //    #region Events
-                //    foreach (KeyValuePair<DateTime, Dictionary<int, DateTime>> chlDateWiseEvent in lstChlEvents)
-                //    #endregion
-                //    {
-                //        foreach (KeyValuePair<int, DateTime> chlEvent in chlDateWiseEvent.Value)
-                //        {
-                //            if (cards.Exists(c => c.CardholderID == chlEvent.Key))
-                //            {
-                //                Card card = cards.Find(c => c.CardholderID == chlEvent.Key);
-                //                #region CHL
-                //                //CardholderLocation cardHolderLocation = chlEvent.Value;
-                //                #endregion
-                //                #region Events
-                //                DateTime occurranceTime = chlEvent.Value.AddHours(5);
-                //                #endregion
-                //                Cardholder cardHolder = card.Cardholder;
-
-                //                if (cardHolder != null && cardHolder.PersonalDataStrings != null)
-                //                {
-                //                    string department = (from pds in cardHolder.PersonalDataStrings
-                //                                         where pds != null && pds.PersonalDataFieldID == 5043
-                //                                         select pds.Value).FirstOrDefault();
-
-                //                    string section = (from pds in cardHolder.PersonalDataStrings
-                //                                      where pds != null && pds.PersonalDataFieldID == 12951
-                //                                      select pds.Value).FirstOrDefault();
-
-                //                    string crew = (from pds in cardHolder.PersonalDataStrings
-                //                                   where pds != null && pds.PersonalDataFieldID == 12869
-                //                                   select pds.Value).FirstOrDefault();
-
-                //                    string cadre = (from pds in cardHolder.PersonalDataStrings
-                //                                    where pds != null && pds.PersonalDataFieldID == 12952
-                //                                    select pds.Value).FirstOrDefault();
-
-                //                    string cnic = (from pds in cardHolder.PersonalDataStrings
-                //                                   where pds != null && pds.PersonalDataFieldID == 5051
-                //                                   select pds.Value).FirstOrDefault();
-
-                //                    string company = (from pds in cardHolder.PersonalDataStrings
-                //                                      where pds != null && pds.PersonalDataFieldID == 5059
-                //                                      select pds.Value).FirstOrDefault();
-
-                //                    //if (cadre == "Work Order")
-                //                    //{
-                //                    //    MessageBox.Show("First Name: "+ cardHolder.FirstName + " cadre: "+ cadre + "Time In: " + occurranceTime.ToString());
-                //                    //}
-
-                //                    if (!string.IsNullOrEmpty(department))
-                //                    {
-                //                        //if (cadre == "Work Order")
-                //                        //{
-                //                        //    MessageBox.Show("First Name: " + cardHolder.FirstName + " cadre: " + cadre + " Department: " + department + " Time In: " + occurranceTime.ToString());
-                //                        //}
-
-                //                        department = department.ToUpper();
-                //                        filterByDepartment = filterByDepartment.ToUpper();
-
-
-                //                        //Filter By Department
-                //                        if (!string.IsNullOrEmpty(filterByDepartment) && department != filterByDepartment)
-                //                        {
-                //                            continue;
-                //                        }
-
-                //                        if (!string.IsNullOrEmpty(section))
-                //                        {
-                //                            //if (cadre == "Work Order")
-                //                            //{
-                //                            //    MessageBox.Show("First Name: " + cardHolder.FirstName + " cadre: " + cadre + " Department: " + department + " Section: " + section +  " Time In: " + occurranceTime.ToString());
-                //                            //}
-                //                            section = section.ToUpper();
-                //                            filterBySection = filterBySection.ToUpper();
-
-
-                //                            //Filter By Section
-                //                            if (!string.IsNullOrEmpty(filterBySection) && section != filterBySection)
-                //                            {
-                //                                continue;
-                //                            }
-
-
-                //                            //Filter By Name
-                //                            if (!string.IsNullOrEmpty(filerByName) && !cardHolder.FirstName.Contains(filerByName))
-                //                            {
-                //                                continue;
-                //                            }
-
-
-                //                            //Filter By P-Number
-                //                            int? pNumber = cardHolder.PersonalDataIntegers == null || cardHolder.PersonalDataIntegers.Count == 0 ? null : cardHolder.PersonalDataIntegers.ElementAt(0).Value;
-                //                            string strPNumber = pNumber == null ? "Nil" : pNumber.ToString();
-
-                //                            if (!string.IsNullOrEmpty(filterByPNumber) && (pNumber == null || pNumber != Convert.ToInt32(filterByPNumber)))
-                //                            {
-                //                                continue;
-                //                            }
-
-                //                            //if (cadre == "Work Order")
-                //                            //{
-                //                            //    MessageBox.Show("First Name: " + cardHolder.FirstName + " cadre: " + cadre + " P-Number: " + strPNumber +  " Time In: " + occurranceTime.ToString());
-                //                            //}
-
-                //                            //Filter By Card Number
-                //                            if (!string.IsNullOrEmpty(filterByCardNumber))
-                //                            {
-                //                                int cardNumber;
-
-                //                                bool parsed = Int32.TryParse(cardHolder.LastName, out cardNumber);
-
-                //                                if (parsed)
-                //                                {
-                //                                    if (cardNumber != Convert.ToInt32(filterByCardNumber))
-                //                                    {
-                //                                        continue;
-                //                                    }
-                //                                }
-                //                                else
-                //                                {
-                //                                    continue;
-                //                                }
-
-                //                            }
-
-                //                            //Filter By Crew
-                //                            if (!string.IsNullOrEmpty(filterByCrew) && crew != filterByCrew)
-                //                            {
-                //                                continue;
-                //                            }
-
-                //                            //Filter By Cadre
-                //                            if (!string.IsNullOrEmpty(filterByCadre) && cadre != filterByCadre)
-                //                            {
-                //                                continue;
-                //                            }
-
-                //                            //Filter By CNIC
-                //                            if (!string.IsNullOrEmpty(filterByCNIC) && cnic != filterByCNIC)
-                //                            {
-                //                                continue;
-                //                            }
-
-                //                            //Filter By Company
-                //                            if (!string.IsNullOrEmpty(filterByCompany) && company != filterByCompany)
-                //                            {
-                //                                continue;
-                //                            }
-
-                //                            TimeSpan thStartTime = DateTime.MinValue.TimeOfDay;
-                //                            TimeSpan thEndTime = DateTime.MaxValue.TimeOfDay;
-
-                //                            if (this.mLateArrivalReport)
-                //                            {
-                //                                thStartTime = this.dtpLateTimeStart.Value.TimeOfDay;
-                //                                thEndTime = this.dtpLateTimeEnd.Value.TimeOfDay;
-                //                            }
-
-
-
-                //                            #region CHL
-                //                            //if (TimeSpan.Compare(cardHolderLocation.AccessTime.AddHours(5).TimeOfDay, thStartTime) > 0 && TimeSpan.Compare(cardHolderLocation.AccessTime.AddHours(5).TimeOfDay, thEndTime) <= 0)
-                //                            #endregion
-                //                            #region Events
-                //                            if (TimeSpan.Compare(occurranceTime.TimeOfDay, thStartTime) > 0 && TimeSpan.Compare(occurranceTime.TimeOfDay, thEndTime) <= 0)
-                //                            #endregion
-                //                            {
-                //                                CardHolderReportInfo chi = new CardHolderReportInfo()
-                //                                {
-                //                                    CardNumber = cardHolder.LastName,
-                //                                    FirstName = cardHolder.FirstName,
-                //                                    #region CHL
-                //                                    //OccurrenceTime = cardHolderLocation.AccessTime.AddHours(5),
-                //                                    #endregion
-                //                                    #region Events
-                //                                    OccurrenceTime = occurranceTime,
-                //                                    #endregion
-                //                                    PNumber = strPNumber,
-                //                                    Crew = crew,
-                //                                    Cadre = cadre,
-                //                                    Company = company,
-                //                                    CNICNumber = cnic
-                //                                };
-
-
-                //                                if (this.mData.ContainsKey(department))
-                //                                {
-                //                                    if (this.mData[department].ContainsKey(section))
-                //                                    {
-                //                                        if (this.mData[department][section].ContainsKey(cadre))
-                //                                        {
-                //                                            List<CardHolderReportInfo> lstchi = this.mData[department][section][cadre];
-                //                                            lstchi.Add(chi);
-                //                                            this.mData[department][section][cadre] = lstchi;
-                //                                        }
-                //                                        else
-                //                                        {
-                //                                            List<CardHolderReportInfo> lstchi = new List<CardHolderReportInfo>();
-                //                                            lstchi.Add(chi);
-                //                                            this.mData[department][section].Add(cadre, lstchi);
-                //                                        }
-
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        List<CardHolderReportInfo> lstchi = new List<CardHolderReportInfo>();
-                //                                        lstchi.Add(chi);
-                //                                        Dictionary<string, List<CardHolderReportInfo>> dictCadres = new Dictionary<string, List<CardHolderReportInfo>>();
-                //                                        dictCadres.Add(cadre, lstchi);
-                //                                        this.mData[department].Add(section, dictCadres);
-                //                                    }
-                //                                }
-                //                                else
-                //                                {
-                //                                    List<CardHolderReportInfo> lstchi = new List<CardHolderReportInfo>();
-                //                                    lstchi.Add(chi);
-                //                                    Dictionary<string, List<CardHolderReportInfo>> dictCadres = new Dictionary<string, List<CardHolderReportInfo>>();
-                //                                    dictCadres.Add(cadre, lstchi);
-                //                                    Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>> dictSections = new Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>();
-                //                                    dictSections.Add(section, dictCadres);
-                //                                    this.mData.Add(department, dictSections);
-                //                                }
-
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }                    
-                //    }
-                #endregion
+         
 
                 #region static data
 
@@ -1493,11 +1177,11 @@ namespace AttendanceReport
 
                 //data.Add(dep, sections);
 
-                //this.mData = data;
+               
 
                 #endregion
 
-                if (this.mData != null && this.mData.Count > 0)
+                if (this.lstCardHolderReportInfo != null && this.lstCardHolderReportInfo.Count > 0)
                 {
                     Cursor.Current = currentCursor;
                     this.saveFileDialog1.ShowDialog(this);
@@ -1534,15 +1218,15 @@ namespace AttendanceReport
 
             if (extension == ".pdf")
             {
-                this.SaveAsPdf(this.mData, "Late Arrival Report");
+                this.SaveAsPdf(this.lstCardHolderReportInfo, "Late Arrival Report");
             }
             else if (extension == ".xlsx")
             {
-                this.SaveAsExcel(this.mData, "Late Arrival Report", "Late Arrival Report");
+                this.SaveAsExcel(this.lstCardHolderReportInfo, "Late Arrival Report", "Late Arrival Report");
             }
         }
 
-        private void SaveAsPdf(Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>> data, string heading)
+        private void SaveAsPdf(List<CardHolderReportInfo> data, string heading)
         {
             Cursor currentCursor = Cursor.Current;
 
@@ -1550,7 +1234,7 @@ namespace AttendanceReport
             {
                 Cursor.Current = Cursors.WaitCursor;
                 if (data != null)
-                {
+                {                   
                     using (PdfWriter pdfWriter = new PdfWriter(this.saveFileDialog1.FileName))
                     {
                         using (PdfDocument pdfDocument = new PdfDocument(pdfWriter))
@@ -1561,7 +1245,7 @@ namespace AttendanceReport
                                 string headerLeftText = "Report From: " + this.dtpFromDate.Value.ToShortDateString() + " To: " + this.dtpToDate.Value.ToShortDateString();
                                 string headerRightText = "Late Time Range: " + this.dtpLateTimeStart.Value.ToShortTimeString() + " - " + this.dtpLateTimeEnd.Value.ToShortTimeString();
                                 string footerLeftText = "This is computer generated report.";
-                                string footerRightText = "Report generated on: " + DateTime.Now.ToString(); 
+                                string footerRightText = "Report generated on: " + DateTime.Now.ToString();
 
                                 pdfDocument.AddEventHandler(PdfDocumentEvent.START_PAGE, new PdfHeaderAndFooter(doc, true, headerLeftText, headerRightText));
                                 pdfDocument.AddEventHandler(PdfDocumentEvent.END_PAGE, new PdfHeaderAndFooter(doc, false, footerLeftText, footerRightText));
@@ -1569,7 +1253,7 @@ namespace AttendanceReport
                                 //pdfDocument.SetDefaultPageSize(new iText.Kernel.Geom.PageSize(1000F, 1000F));
                                 //  Table table = new Table((new List<float>() { 8F, 100F, 150F, 70F, 250F }).ToArray());
                                 pdfDocument.SetDefaultPageSize(new iText.Kernel.Geom.PageSize(800F, 842F));
-                                Table table = new Table((new List<float>() { 90F, 140F, 120F, 120F, 120F, 120F }).ToArray());
+                                Table table = new Table((new List<float>() { 50F, 150F, 100F, 100F, 60F, 60F, 60F, 90F }).ToArray());
                                 table.SetWidth(720F);
                                 table.SetFixedLayout();
                                 //Table table = new Table((new List<float>() { 8F, 100F, 150F, 225F, 60F, 40F, 100F, 125F, 150F }).ToArray());
@@ -1581,55 +1265,93 @@ namespace AttendanceReport
 
                                 //Sections and Data
                                 TimeSpan thStartTime = this.dtpLateTimeStart.Value.TimeOfDay;
-
-                                foreach (KeyValuePair<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>> department in data)
+                                List<string> lstDepartment = new List<string>();
+                                List<CardHolderReportInfo> lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
+                                List<CardHolderReportInfo> lstcardHolderReportInfo = data.OrderBy(o => o.Department).ToList();
+                                int lstIndex = lstcardHolderReportInfo.Count - 1;
+                                for (int j = 0; j < lstcardHolderReportInfo.Count; j++) 
                                 {
-                                    if (department.Value == null)
+                                    CardHolderReportInfo cardHolderReportInfo = lstcardHolderReportInfo[j];
+                                    if (lstDepartment.Contains(cardHolderReportInfo.Department))
                                     {
-                                        continue;
-                                    }
-
-                                    //Department
-                                    this.AddDepartmentRow(table, department.Key);
-
-                                    foreach (KeyValuePair<string, Dictionary<string, List<CardHolderReportInfo>>> section in department.Value)
-                                    {
-                                        if (section.Value == null)
+                                        
+                                        TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                        string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                        if (timeDiff.Seconds > 30)
                                         {
-                                            continue;
+                                            int minute = timeDiff.Minutes + 1;
+                                            diff = timeDiff.Hours + ":" + minute;
                                         }
+                                        
+                                        cardHolderReportInfo.LateTime = diff;
+                                        lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);                                        
+                                    }
+                                    else
+                                    {
+                                                                              
+                                        lstDepartment.Add(cardHolderReportInfo.Department);
 
-                                        //Section
-                                        this.AddSectionRow(table, section.Key);
-
-
-                                        foreach (KeyValuePair<string, List<CardHolderReportInfo>> cadre in section.Value)
+                                        if (lstDepartmentWiseReportInfo.Count > 0)
                                         {
-                                            if (cadre.Value == null)
+                                            //Department
+                                            this.AddDepartmentRow(table, lstDepartmentWiseReportInfo[0].Department);
+                                            this.AddTableHeaderRow(table);
+                                           
+                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                            for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
                                             {
-                                                continue;
+                                                CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
+                                                this.AddTableDataRow(table, chl, i % 2 == 0, i + 1);
                                             }
 
-                                            //Cadre
-                                            this.AddCadreRow(table, cadre.Key);
+                                            this.AddNewEmptyRow(table);
 
-                                            //Data
-                                            //this.AddNewEmptyRow(table, false);
-
-                                            this.AddTableHeaderRow(table);
-
-                                            for (int i = 0; i < cadre.Value.Count; i++)
+                                           
+                                            TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                            string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                            if (timeDiff.Seconds > 30)
                                             {
-                                                CardHolderReportInfo chl = cadre.Value[i];
-                                                this.AddTableDataRow(table, chl, i % 2 == 0,i+1, thStartTime);
+                                                int minute = timeDiff.Minutes + 1;
+                                                diff = timeDiff.Hours + ":" + minute;
+                                            }
+                                            cardHolderReportInfo.LateTime = diff;
+                                            lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
+                                            lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
+                                        }
+                                        else
+                                        {
+                                           
+                                            TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                            string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                            if (timeDiff.Seconds > 30)
+                                            {
+                                                int minute = timeDiff.Minutes + 1;
+                                                diff = timeDiff.Hours + ":" + minute;
+                                            }
+                                            cardHolderReportInfo.LateTime = diff;
+                                            lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
+                                        }
+
+                                    }
+
+                                    if (lstIndex == j)
+                                    {
+                                        if (lstDepartmentWiseReportInfo.Count > 0)
+                                        {
+                                            //Department
+                                            this.AddDepartmentRow(table, lstDepartmentWiseReportInfo[0].Department);
+                                            this.AddTableHeaderRow(table);
+                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                            for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
+                                            {
+                                                CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
+                                                this.AddTableDataRow(table, chl, i % 2 == 0, i + 1);
                                             }
 
                                             this.AddNewEmptyRow(table);
                                         }
-                                    }
+                                    }                                                                      
                                 }
-
-                                
 
                                 doc.Add(table);
 
@@ -1662,7 +1384,9 @@ namespace AttendanceReport
             }
         }
 
-        private void SaveAsExcel(Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>> data, string sheetName, string heading)
+    
+
+        private void SaveAsExcel(List<CardHolderReportInfo> data, string sheetName, string heading)
         {
             Cursor currentCursor = Cursor.Current;
             try
@@ -1680,12 +1404,14 @@ namespace AttendanceReport
                         work.View.ShowGridLines = false;
                         work.Cells.Style.Font.Name = "Segoe UI Light";
 
-                        work.Column(1).Width = 15.14;
+                        work.Column(1).Width = 18.14;
                         work.Column(2).Width = 40;
                         work.Column(3).Width = 25.29;
                         work.Column(4).Width = 18.14;                       
-                        work.Column(5).Width = 30.14;
-                        work.Column(6).Width = 30.14;
+                        work.Column(5).Width = 18.14;
+                        work.Column(6).Width = 18.14;
+                        work.Column(7).Width = 18.14;
+                        work.Column(8).Width = 20.14;
 
 
                         //Heading
@@ -1751,129 +1477,233 @@ namespace AttendanceReport
 
                         row++;
                         row++;
-                        //Sections and Data
 
-                        foreach (KeyValuePair<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>> department in data)
+                        TimeSpan thStartTime = this.dtpLateTimeStart.Value.TimeOfDay;
+                        List<string> lstDepartment = new List<string>();
+                        List<CardHolderReportInfo> lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
+                        List<CardHolderReportInfo> lstcardHolderReportInfo = data.OrderBy(o => o.Department).ToList();
+                        int lstIndex = lstcardHolderReportInfo.Count - 1;
+                        for (int j = 0; j < lstcardHolderReportInfo.Count; j++)
                         {
-                            if (department.Value == null)
+                            CardHolderReportInfo cardHolderReportInfo = lstcardHolderReportInfo[j];
+                            if (lstDepartment.Contains(cardHolderReportInfo.Department))
                             {
-                                continue;
-                            }
 
-                            //Department
-                            work.Cells[row, 1].Style.Font.Bold = true;
-                            work.Cells[row, 1].Style.Font.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                            work.Cells[row, 1, row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                            work.Cells[row, 1, row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            work.Cells[row, 1].Value = "Department:";
-                            work.Cells[row, 2].Value = department.Key;
-                            work.Cells[row, 2].Style.Font.UnderLine = true;
-                            work.Row(row).Height = 20;
-
-                            row++;
-
-                            TimeSpan thStartTime = this.dtpLateTimeStart.Value.TimeOfDay;
-
-                            foreach (KeyValuePair<string, Dictionary<string, List<CardHolderReportInfo>>> section in department.Value)
-                            {
-                                if (section.Value == null)
+                                TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                if (timeDiff.Seconds > 30)
                                 {
-                                    continue;
+                                    int minute = timeDiff.Minutes + 1;
+                                    diff = timeDiff.Hours + ":" + minute;
                                 }
 
-                                //Section
-                                work.Cells[row, 1].Style.Font.Bold = true;
-                                work.Cells[row, 1].Style.Font.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                work.Cells[row, 1, row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                                work.Cells[row, 1, row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                                work.Cells[row, 1].Value = "Section:";
-                                work.Cells[row, 2].Value = section.Key;
-                                work.Row(row).Height = 20;
+                                cardHolderReportInfo.LateTime = diff;
+                                lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
+                            }
+                            else
+                            {
 
-                                //Data
-                                row++;
+                                lstDepartment.Add(cardHolderReportInfo.Department);
 
-                                foreach (KeyValuePair<string, List<CardHolderReportInfo>> cadre in section.Value)
+                                if (lstDepartmentWiseReportInfo.Count > 0)
+                                {
+                                    
+
+                                        //Department
+                                        work.Cells[row, 1].Style.Font.Bold = true;
+                                        work.Cells[row, 1].Style.Font.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                                        work.Cells[row, 1, row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                        work.Cells[row, 1].Value = "Department:";
+                                        work.Cells[row, 2].Value = lstDepartmentWiseReportInfo[0].Department;
+                                        work.Cells[row, 2].Style.Font.UnderLine = true;
+                                        work.Row(row).Height = 20;
+
+                                        row++;
+
+                                        lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                        work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+
+                                        work.Cells[row, 1, row, 8].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+
+                                        work.Cells[row, 1, row, 8].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                        work.Cells[row, 1, row, 8].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(253, 233, 217));
+                                        work.Cells[row, 1, row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                                    work.Cells[row, 1, row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                                    work.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                    work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                    work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+
+                                    work.Cells[row, 1].Value = "S #.";
+                                    work.Cells[row, 2].Value = "First Name";
+                                    work.Cells[row, 3].Value = "Section";
+                                    work.Cells[row, 4].Value = "Cadre";
+                                    work.Cells[row, 5].Value = "P-Number";
+                                    work.Cells[row, 6].Value = "Entry Date";
+                                    work.Cells[row, 7].Value = "Entry Time";
+                                    work.Cells[row, 8].Value = "Total Late (HH:MM)";
+                                    work.Row(row).Height = 20;
+
+                                        for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
+                                        {
+                                            row++;
+                                            work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                            work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                            work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                            work.Cells[row, 1, row, 8].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+
+                                            work.Cells[row, 1, row, 8].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                            work.Cells[row, 1, row, 8].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                            work.Cells[row, 1, row, 8].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                            work.Cells[row, 1, row, 8].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                                        if (i % 2 == 0)
+                                            {
+                                                work.Cells[row, 1, row, 8].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                                work.Cells[row, 1, row, 8].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                                            }
+
+                                           
+                                            work.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                            work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                            work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                        
+                                            CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
+
+                                        work.Cells[row, 1].Value = i + 1;
+                                        work.Cells[row, 2].Value = chl.FirstName;
+                                        work.Cells[row, 3].Value = chl.Section;
+                                        work.Cells[row, 4].Value = chl.Cadre;
+                                        work.Cells[row, 5].Value = chl.PNumber;
+                                        work.Cells[row, 6].Value = chl.OccurrenceTime.ToShortDateString();
+                                        work.Cells[row, 7].Value = chl.OccurrenceTime.TimeOfDay.ToString();
+                                        work.Cells[row, 8].Value = chl.LateTime;
+
+                                        work.Row(row).Height = 20;
+                                        }
+
+                                        row++;
+                                        row++;
+                                    
+
+
+                                    TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                    string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                    if (timeDiff.Seconds > 30)
+                                    {
+                                        int minute = timeDiff.Minutes + 1;
+                                        diff = timeDiff.Hours + ":" + minute;
+                                    }
+                                    cardHolderReportInfo.LateTime = diff;
+                                    lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
+                                    lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
+                                }
+                                else
                                 {
 
-                                    if (cadre.Value == null)
+                                    TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                    string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
+                                    if (timeDiff.Seconds > 30)
                                     {
-                                        continue;
+                                        int minute = timeDiff.Minutes + 1;
+                                        diff = timeDiff.Hours + ":" + minute;
                                     }
+                                    cardHolderReportInfo.LateTime = diff;
+                                    lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
+                                }
 
-                                    //Section
+                            }
+
+                            if (lstIndex == j)
+                            {
+                                if (lstDepartmentWiseReportInfo.Count > 0)
+                                {
+                                    
+                                    //Department
                                     work.Cells[row, 1].Style.Font.Bold = true;
                                     work.Cells[row, 1].Style.Font.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
                                     work.Cells[row, 1, row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                                     work.Cells[row, 1, row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                                    work.Cells[row, 1].Value = "Cadre:";
-                                    work.Cells[row, 2].Value = cadre.Key;
+                                    work.Cells[row, 1].Value = "Department:";
+                                    work.Cells[row, 2].Value = lstDepartmentWiseReportInfo[0].Department;
+                                    work.Cells[row, 2].Style.Font.UnderLine = true;
                                     work.Row(row).Height = 20;
 
-                                    //Data
                                     row++;
 
+                                    lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                    work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                    work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                    work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                    work.Cells[row, 1, row, 8].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
-                                    work.Cells[row, 1, row, 6].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                    work.Cells[row, 1, row, 6].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                    work.Cells[row, 1, row, 6].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                    work.Cells[row, 1, row, 6].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                    work.Cells[row, 1, row, 8].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                    work.Cells[row, 1, row, 8].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                    work.Cells[row, 1, row, 8].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                    work.Cells[row, 1, row, 8].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
 
-                                    work.Cells[row, 1, row, 6].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                    work.Cells[row, 1, row, 6].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                    work.Cells[row, 1, row, 6].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                    work.Cells[row, 1, row, 6].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                    work.Cells[row, 1, row, 8].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                    work.Cells[row, 1, row, 8].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(253, 233, 217));
+                                    work.Cells[row, 1, row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                                    work.Cells[row, 1, row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                                    work.Cells[row, 1, row, 6].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                                    work.Cells[row, 1, row, 6].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(253, 233, 217));
-                                    work.Cells[row, 1, row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                                    work.Cells[row, 1, row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                                    work.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                    work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                    work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
 
                                     work.Cells[row, 1].Value = "S #.";
                                     work.Cells[row, 2].Value = "First Name";
-                                    work.Cells[row, 3].Value = "Card Number";
-                                    work.Cells[row, 4].Value = "P-Number";
-                                    work.Cells[row, 5].Value = "Entry Timing";
-                                    work.Cells[row, 6].Value = "Total Late (HH:MM)";
+                                    work.Cells[row, 3].Value = "Section";
+                                    work.Cells[row, 4].Value = "Cadre";
+                                    work.Cells[row, 5].Value = "P-Number";
+                                    work.Cells[row, 6].Value = "Entry Date";
+                                    work.Cells[row, 7].Value = "Entry Time";
+                                    work.Cells[row, 8].Value = "Total Late (HH:MM)";
                                     work.Row(row).Height = 20;
 
-                                    for (int i = 0; i < cadre.Value.Count; i++)
+                                    for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
                                     {
                                         row++;
-                                        work.Cells[row, 1, row, 6].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                        work.Cells[row, 1, row, 6].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                        work.Cells[row, 1, row, 6].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                                        work.Cells[row, 1, row, 6].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                                        work.Cells[row, 1, row, 8].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
-                                        work.Cells[row, 1, row, 6].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                        work.Cells[row, 1, row, 6].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                        work.Cells[row, 1, row, 6].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-                                        work.Cells[row, 1, row, 6].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
-
+                                        work.Cells[row, 1, row, 8].Style.Border.Top.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Bottom.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Left.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(247, 150, 70));
+                                        work.Cells[row, 1, row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                         if (i % 2 == 0)
                                         {
-                                            work.Cells[row, 1, row, 6].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                                            work.Cells[row, 1, row, 6].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                                            work.Cells[row, 1, row, 8].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                            work.Cells[row, 1, row, 8].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                                         }
 
-                                        work.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                        work.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                        work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                        work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                        work.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                        work.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                                       
+                                        work.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                        work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                        work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                                        
 
 
-
-
-                                        CardHolderReportInfo chl = cadre.Value[i];
-                                        TimeSpan timeDiff =  chl.OccurrenceTime.TimeOfDay - thStartTime;
-                                        work.Cells[row, 1].Value = i+1;
+                                        CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
+                                       
+                                        work.Cells[row, 1].Value = i + 1;
                                         work.Cells[row, 2].Value = chl.FirstName;
-                                        work.Cells[row, 3].Value = chl.CardNumber;
-                                        work.Cells[row, 4].Value = chl.PNumber;
-                                        work.Cells[row, 5].Value = chl.OccurrenceTime.ToString();
-                                        work.Cells[row, 6].Value = timeDiff.Hours+":"+timeDiff.Minutes;
+                                        work.Cells[row, 3].Value = chl.Section;
+                                        work.Cells[row, 4].Value = chl.Cadre;
+                                        work.Cells[row, 5].Value = chl.PNumber;
+                                        work.Cells[row, 6].Value = chl.OccurrenceTime.ToShortDateString();
+                                        work.Cells[row, 7].Value = chl.OccurrenceTime.TimeOfDay.ToString();
+                                        work.Cells[row, 8].Value = chl.LateTime;
 
                                         work.Row(row).Height = 20;
                                     }
@@ -1881,11 +1711,10 @@ namespace AttendanceReport
                                     row++;
                                     row++;
                                 }
-
-
                             }
-
                         }
+
+
 
                         ex.SaveAs(new System.IO.FileInfo(this.saveFileDialog1.FileName));
 
@@ -1921,16 +1750,16 @@ namespace AttendanceReport
         {
             Cell headingCell = new Cell(1, 4);
             headingCell.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-            headingCell.SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 3));
-            headingCell.Add(new Paragraph(heading).SetFontSize(22F).SetBackgroundColor(new DeviceRgb(252, 213, 180))
+            headingCell.SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1));
+            headingCell.Add(new Paragraph(heading).SetFontSize(20F).SetBackgroundColor(new DeviceRgb(252, 213, 180))
                // .SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 3))
                 );
             iText.Layout.Element.Image img = new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create("Images/logo.png"));
-
+            img.SetHeight(40f);
             table.AddCell(headingCell);
            // table.AddCell(new Cell().Add(new Paragraph(string.Empty).SetFontSize(22F)).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.BLACK, 3)));
             //table.AddCell(new Cell().Add(new Paragraph(string.Empty).SetFontSize(22F)).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 3)));
-            table.AddCell(new Cell().Add(img).SetMarginLeft(20F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 3)));
+            table.AddCell(new Cell().Add(img).SetMarginLeft(180F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
         }
 
         private void AddNewEmptyRow(Table table, bool removeBottomBorder = true)
@@ -2012,29 +1841,33 @@ namespace AttendanceReport
         {
             table.StartNewRow();
 
-           
+
             table.AddCell(new Cell().
-                    Add(new Paragraph("Department:").
-                    SetFontSize(11F).
-                    SetBold().
-                    SetFontColor(new DeviceRgb(247, 150, 70))).
-                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
-                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
-                SetHeight(22F).
-                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+                  Add(new Paragraph("Department:").
+                  SetFontSize(11F).
+                  SetBold().
+                  SetFontColor(new DeviceRgb(247, 150, 70))).
+              SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
+              SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
+              SetHeight(22F).
+              SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                  SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                  SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
             table.AddCell(new Cell().
                     Add(new Paragraph(departmentName).
-                    SetFontSize(11F).SetUnderline()).
+                    SetFontSize(11F)).
                 SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
                 SetHeight(22F).
-                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+                SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
         }
 
         private void AddSectionRow(Table table, string sectionName)
@@ -2131,14 +1964,21 @@ namespace AttendanceReport
                   SetFontSize(11F)).
               SetBackgroundColor(new DeviceRgb(253, 233, 217)).
               SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
-              SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+              SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
               SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
             table.AddCell(new Cell().
-                    Add(new Paragraph("Card Number").
+                   Add(new Paragraph("Section").
+                   SetFontSize(11F)).
+               SetBackgroundColor(new DeviceRgb(253, 233, 217)).
+               SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
+               SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
+               SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
+            table.AddCell(new Cell().
+                    Add(new Paragraph("Cadre").
                     SetFontSize(11F)).
                 SetBackgroundColor(new DeviceRgb(253, 233, 217)).
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
-                SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+                SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
             table.AddCell(new Cell().
                    Add(new Paragraph("P-Number").
@@ -2148,7 +1988,14 @@ namespace AttendanceReport
                SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
             table.AddCell(new Cell().
-                    Add(new Paragraph("Entry Timing").
+                   Add(new Paragraph("Entry Date").
+                   SetFontSize(11F)).
+               SetBackgroundColor(new DeviceRgb(253, 233, 217)).
+               SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
+               SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+               SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
+            table.AddCell(new Cell().
+                    Add(new Paragraph("Entry Time").
                     SetFontSize(11F)).
                 SetBackgroundColor(new DeviceRgb(253, 233, 217)).
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
@@ -2193,14 +2040,14 @@ namespace AttendanceReport
             //    SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
         }
 
-        private void AddTableDataRow(Table table, CardHolderReportInfo chl, bool altRow,int serNum, TimeSpan thStartTime)
+        private void AddTableDataRow(Table table, CardHolderReportInfo chl, bool altRow,int serNum)
         {
             if (chl == null)
             {
                 return;
             }
 
-            TimeSpan timeDiff =   chl.OccurrenceTime.TimeOfDay - thStartTime;
+           
 
             table.StartNewRow();
 
@@ -2217,15 +2064,23 @@ namespace AttendanceReport
                     SetFontSize(11F)).
                 SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
-                SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+                SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
 
             table.AddCell(new Cell().
-                    Add(new Paragraph(string.IsNullOrEmpty(chl.CardNumber) ? string.Empty : chl.CardNumber).
+                   Add(new Paragraph(string.IsNullOrEmpty(chl.Section) ? string.Empty : chl.Section).
+                   SetFontSize(11F)).
+               SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
+               SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
+               SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
+               SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
+
+            table.AddCell(new Cell().
+                    Add(new Paragraph(string.IsNullOrEmpty(chl.Cadre) ? string.Empty : chl.Cadre).
                     SetFontSize(11F)).
                 SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
-                SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+                SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
         
             table.AddCell(new Cell().
@@ -2235,9 +2090,8 @@ namespace AttendanceReport
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
                 SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
-
             table.AddCell(new Cell().
-                Add(new Paragraph(string.IsNullOrEmpty(chl.OccurrenceTime.ToString()) ? string.Empty : chl.OccurrenceTime.ToString()).
+                Add(new Paragraph(string.IsNullOrEmpty(chl.OccurrenceTime.ToShortDateString()) ? string.Empty : chl.OccurrenceTime.ToShortDateString()).
                 SetFontSize(11F)).
             SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
             SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
@@ -2245,7 +2099,15 @@ namespace AttendanceReport
             SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
 
             table.AddCell(new Cell().
-                Add(new Paragraph(timeDiff.Hours+":"+timeDiff.Minutes).
+                Add(new Paragraph(string.IsNullOrEmpty(chl.OccurrenceTime.TimeOfDay.ToString()) ? string.Empty : chl.OccurrenceTime.TimeOfDay.ToString()).
+                SetFontSize(11F)).
+            SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
+            SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
+            SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
+            SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
+
+            table.AddCell(new Cell().
+                Add(new Paragraph(chl.LateTime).
                 SetFontSize(11F)).
             SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
             SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
