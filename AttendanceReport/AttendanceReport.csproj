@@ -476,6 +476,10 @@
     <Compile Include="SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CCBoxItem.cs" />
+    <Compile Include="UserControls\CheckedComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ActivityReportForm.resx">
       <DependentUpon>ActivityReportForm.cs</DependentUpon>
     </EmbeddedResource>

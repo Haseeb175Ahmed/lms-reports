@@ -30,14 +30,14 @@ namespace AttendanceReport
         {
             InitializeComponent();
 
-            EFERTDbUtility.UpdateDropDownFields(this.cbxDepartments, this.cbxSections, this.cbxCompany, this.cbxCadre, this.cbxCrew);
+            EFERTDbUtility.UpdateDropDownFieldsMultiCombobox(this.cbxDepartments, this.cbxSections, this.cbxCompany, this.cbxCadre, this.cbxCrew);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Cursor currentCursor = Cursor.Current;
             try
-            {
+            {                
 
                 Cursor.Current = Cursors.WaitCursor;
                 
@@ -73,9 +73,9 @@ namespace AttendanceReport
                                                        events.OccurrenceTime < toDateUtc
                                                    select events).ToList();
 
-                                                   //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
+                //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
 
-                                                   #region Dummy Events
+                #region Dummy Events
 
                 //List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>()
                 //{
@@ -189,7 +189,7 @@ namespace AttendanceReport
                     //        }
                     //    }
                     //},
-                  //   };
+                     //};
 
                     #endregion
 
@@ -261,8 +261,8 @@ namespace AttendanceReport
             //MessageBox.Show(this, "Temp Cards found: " + strLstTempCards.Count);
 
             List<CheckInAndOutInfo> filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
-                                                        where checkin != null && !checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
-                                                        strLstTempCards.Contains(checkin.CardNumber)                                                   
+                                                        where checkin != null && !checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate
+                                                        && strLstTempCards.Contains(checkin.CardNumber)
                                                         select checkin).ToList();
 
                 if (!string.IsNullOrEmpty(filterByCNIC))
@@ -303,77 +303,153 @@ namespace AttendanceReport
                 else
                 {
 
-                    
-                    if (!string.IsNullOrEmpty(filterBySection))
-                    {
-                        filterBySection = filterBySection.ToLower();
+                    List<CheckInAndOutInfo> filteredCheckInsNew = new List<CheckInAndOutInfo>();
 
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null &&
-                                 ((checkin.CardHolderInfos != null &&
-                                 checkin.CardHolderInfos.Section != null &&
-                                 checkin.CardHolderInfos.Section.SectionName.ToLower() == filterBySection) ||
-                                 (checkin.DailyCardHolders != null &&
-                                 checkin.DailyCardHolders.Section.ToLower() == filterBySection))
-                                            select checkin).ToList();
+                    for (int i = 0; i < filteredCheckIns.Count; i++)
+                    {
+                        CheckInAndOutInfo checkInAndOutInfo = filteredCheckIns[i];
+
+                        if (checkInAndOutInfo == null)
+                        {
+                            continue;
+                        }
+
+                        //filterBySection
+                        if (!string.IsNullOrEmpty(filterBySection))
+                        {
+
+                            string section = string.Empty;
+                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Section != null)
+                            {
+                                section = checkInAndOutInfo.CardHolderInfos.Section.SectionName;
+                            }
+                            else
+                            {
+                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Section))
+                                {
+                                    section = checkInAndOutInfo.DailyCardHolders.Section;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(section))
+                            {
+                                bool isValidEntry = this.isValidEntry(filterBySection, section);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        //filterByCadre
+                        if (!string.IsNullOrEmpty(filterByCadre))
+                        {
+
+                            string cadre = string.Empty;
+                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Cadre != null)
+                            {
+                                cadre = checkInAndOutInfo.CardHolderInfos.Cadre.CadreName;
+                            }
+                            else
+                            {
+                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Cadre))
+                                {
+                                    cadre = checkInAndOutInfo.DailyCardHolders.Cadre;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(cadre))
+                            {
+                                bool isValidEntry = this.isValidEntry(filterByCadre, cadre);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        //filterByCrew
+                        if (!string.IsNullOrEmpty(filterByCrew))
+                        {
+
+                            string crew = string.Empty;
+                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Crew != null)
+                            {
+                                crew = checkInAndOutInfo.CardHolderInfos.Crew.CrewName;
+                            }
+                           
+                            if (!string.IsNullOrEmpty(crew))
+                            {
+                                bool isValidEntry = this.isValidEntry(filterByCrew, crew);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        //filterByDepartment
+                        if (!string.IsNullOrEmpty(filterByDepartment))
+                        {
+
+                            string dept = string.Empty;
+                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Department != null)
+                            {
+                                dept = checkInAndOutInfo.CardHolderInfos.Department.DepartmentName;
+                            }
+                            else
+                            {
+                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Department))
+                                {
+                                    dept = checkInAndOutInfo.DailyCardHolders.Department;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(dept))
+                            {
+                                bool isValidEntry = this.isValidEntry(filterByDepartment, dept);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        //filterByCompany
+                        if (!string.IsNullOrEmpty(filterByCompany))
+                        {
+                            string company = string.Empty;
+                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Company != null)
+                            {
+                                company = checkInAndOutInfo.CardHolderInfos.Company.CompanyName;
+                            }
+                            else if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.CompanyName))
+                            {
+                                company = checkInAndOutInfo.DailyCardHolders.CompanyName;
+                            }
+                            else
+                            {
+                                if (checkInAndOutInfo.Visitors != null && !string.IsNullOrEmpty(checkInAndOutInfo.Visitors.CompanyName))
+                                {
+                                    company = checkInAndOutInfo.Visitors.CompanyName;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(company))
+                            {
+                                bool isValidEntry = this.isValidEntry(filterByCompany, company);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+
+                        filteredCheckInsNew.Add(checkInAndOutInfo);
                     }
 
-
-                    if (!string.IsNullOrEmpty(filterByCadre))
-                    {
-                        filterByCadre = filterByCadre.ToLower();
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null &&
-                                 ((checkin.CardHolderInfos != null &&
-                                 checkin.CardHolderInfos.Cadre != null &&
-                                 checkin.CardHolderInfos.Cadre.CadreName.ToLower() == filterByCadre) ||
-                                 (checkin.DailyCardHolders != null &&
-                                 checkin.DailyCardHolders.Cadre.ToLower() == filterByCadre))
-                                            select checkin).ToList();
-                    }
-
-                    if (!string.IsNullOrEmpty(filterByCrew))
-                    {
-                        filterByCrew = filterByCrew.ToLower();
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null &&
-                                 ((checkin.CardHolderInfos != null &&
-                                 checkin.CardHolderInfos.Crew != null &&
-                                 checkin.CardHolderInfos.Crew.CrewName.ToLower() == filterByCrew))
-                                            select checkin).ToList();
-                    }
-
-                    if (!string.IsNullOrEmpty(filterByDepartment))
-                    {
-                        filterByDepartment = filterByDepartment.ToLower();
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null &&
-                                 ((checkin.CardHolderInfos != null &&
-                                 checkin.CardHolderInfos.Department != null &&
-                                 checkin.CardHolderInfos.Department.DepartmentName.ToLower() == filterByDepartment) ||
-                                 (checkin.DailyCardHolders != null &&
-                                 checkin.DailyCardHolders.Department.ToLower() == filterByDepartment))
-                                            select checkin).ToList();
-                    }
-
-                    if (!string.IsNullOrEmpty(filterByCompany))
-                    {
-                        filterByCompany = filterByCompany.ToLower();
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null &&
-                                 ((checkin.CardHolderInfos != null &&
-                                 checkin.CardHolderInfos.Company != null &&
-                                 !string.IsNullOrEmpty(checkin.CardHolderInfos.Company.CompanyName) &&
-                                 checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
-                                 (checkin.DailyCardHolders != null &&
-                                 !string.IsNullOrEmpty(checkin.DailyCardHolders.CompanyName) &&
-                                 checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany) ||
-                                 (checkin.Visitors != null &&
-                                 !string.IsNullOrEmpty(checkin.Visitors.CompanyName) &&
-                                 checkin.Visitors.CompanyName.ToLower() == filterByCompany))
-                                            select checkin).ToList();
-                    }
-
+                    filteredCheckIns = filteredCheckInsNew;
                 }
                 //MessageBox.Show(this, "Filtered Checkins: " + filteredCheckIns.Count);
 
@@ -557,37 +633,64 @@ namespace AttendanceReport
                             }
 
 
-                            
+
 
                             //Filter By Section
-                            if (!string.IsNullOrEmpty(filterBySection) && section.ToLower() != filterBySection.ToLower())
+                            if (!string.IsNullOrEmpty(filterBySection))
                             {
-                                continue;
+                                bool isValidEntry = this.isValidEntry(filterBySection, section);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
                             }
+
 
                             //Filter By Cadre
-                            if (!string.IsNullOrEmpty(filterByCadre) && cadre.ToLower() != filterByCadre.ToLower())
+                            if (!string.IsNullOrEmpty(filterByCadre))
                             {
-                                continue;
+
+                                bool isValidEntry = this.isValidEntry(filterByCadre, cadre);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
                             }
+
+
 
                             //Filter By Crew
-                            if (!string.IsNullOrEmpty(filterByCrew) && crew != filterByCrew)
+                            if (!string.IsNullOrEmpty(filterByCrew))
                             {
-                                continue;
+                                bool isValidEntry = this.isValidEntry(filterByCrew, crew);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
                             }
 
+
                             //Filter By Department
-                            if (!string.IsNullOrEmpty(filterByDepartment) && department.ToLower() != filterByDepartment.ToLower())
+                            if (!string.IsNullOrEmpty(filterByDepartment))
                             {
-                                continue;
+                                bool isValidEntry = this.isValidEntry(filterByDepartment, department);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
                             }
 
                             //Filter By Company
-                            if (!string.IsNullOrEmpty(filterByCompany) && company.ToLower() != filterByCompany.ToLower())
+                            if (!string.IsNullOrEmpty(filterByCompany))
                             {
-                                continue;
+                                bool isValidEntry = this.isValidEntry(filterByCompany, company);
+                                if (!isValidEntry)
+                                {
+                                    continue;
+                                }
                             }
+
+
 
                             DateTime minInTime = DateTime.MaxValue;
                             DateTime maxOutTime = DateTime.MaxValue;
@@ -1210,6 +1313,49 @@ namespace AttendanceReport
             }
 
         }
+
+
+        private bool isValidEntry(string filtersCommaSep, string filterValue)
+        {
+            bool isValidEntry = true;
+            try
+            {
+                string value = filterValue.ToLower();
+
+                if (filtersCommaSep.ToLower().Contains(value))
+                {
+                    string[] filters = filtersCommaSep.Split(',');
+                    bool skip = true;
+                    for (int i = 0; i < filters.Length; i++)
+                    {
+                        string item = filters[i].Trim();
+                        if (value == item.ToLower())
+                        {
+                            skip = false;
+                            break;
+                        }
+                    }
+
+                    if (skip)
+                    {
+                        isValidEntry = false;
+                    }
+                }
+                else
+                {
+                    isValidEntry = false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+
+            return isValidEntry;
+        }
+
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
@@ -2149,7 +2295,7 @@ namespace AttendanceReport
             if (!(Char.IsDigit(e.KeyChar) || (e.KeyChar == (char)Keys.Back)))
                 e.Handled = true;
         }
-       
+
     }
 
     public class PdfHeaderAndFooter : IEventHandler

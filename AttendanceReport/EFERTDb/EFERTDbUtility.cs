@@ -510,7 +510,162 @@ namespace AttendanceReport
             }
 
         }
+
+
+        public static void UpdateDropDownFieldsMultiCombobox(CheckedComboBox cbxDepartments, CheckedComboBox cbxSections, CheckedComboBox cbxCompany, CheckedComboBox cbxCadre, CheckedComboBox cbxCrew)
+        {
+            if (cbxDepartments != null)
+            {
+                List<string> ccftDepartments = (from pds in EFERTDbUtility.mCCFTCentral.PersonalDataStrings
+                                                where pds != null && pds.PersonalDataFieldID == 5043 && pds.Value != null
+                                                select pds.Value).Distinct().ToList();
+
+                List<string> departments = (from depart in EFERTDbUtility.mEFERTDb.Departments
+                                            where depart != null && !string.IsNullOrEmpty(depart.DepartmentName)
+                                            select depart.DepartmentName).ToList();
+
+                
+
+                departments = departments.TakeWhile(a => !ccftDepartments.Exists(b => b.ToLower() == a.ToLower())).ToList();
+
+                ccftDepartments.AddRange(departments);
+
+                ccftDepartments.Sort();
+
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
+                cbxDepartments.Items.Add(items);
+                for (int i = 0; i < ccftDepartments.Count; i++)
+                {
+                    CCBoxItem item = new CCBoxItem(ccftDepartments[i], i + 1);
+                    cbxDepartments.Items.Add(item);
+                }
+                // If more then 5 items, add a scroll bar to the dropdown.
+                cbxDepartments.MaxDropDownItems = 20;
+                cbxDepartments.DisplayMember = "Name";
+
+            }
+
+            if (cbxSections != null)
+            {
+                List<string> ccftSections = (from pds in EFERTDbUtility.mCCFTCentral.PersonalDataStrings
+                                             where pds != null && pds.PersonalDataFieldID == 12951 && pds.Value != null
+                                             select pds.Value).Distinct().ToList();
+
+                List<string> sections = (from section in EFERTDbUtility.mEFERTDb.Sections
+                                         where section != null && !string.IsNullOrEmpty(section.SectionName)
+                                         select section.SectionName).ToList();
+
+                sections.Insert(0, string.Empty);
+
+                sections = sections.TakeWhile(a => !ccftSections.Exists(b => b.ToLower() == a.ToLower())).ToList();
+
+                ccftSections.AddRange(sections);
+
+                ccftSections.Sort();
+
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
+                cbxSections.Items.Add(items);
+                for (int i = 0; i < ccftSections.Count; i++)
+                {
+                    CCBoxItem item = new CCBoxItem(ccftSections[i], i + 1);
+                    cbxSections.Items.Add(item);
+                }
+                // If more then 5 items, add a scroll bar to the dropdown.
+                cbxSections.MaxDropDownItems = 20;
+                cbxSections.DisplayMember = "Name";
+            }
+
+            if (cbxCompany != null)
+            {
+                List<string> ccftCompanyNames = (from pds in EFERTDbUtility.mCCFTCentral.PersonalDataStrings
+                                                 where pds != null && pds.PersonalDataFieldID == 5059 && pds.Value != null
+                                                 select pds.Value).Distinct().ToList();
+
+                List<string> companies = (from company in EFERTDbUtility.mEFERTDb.Companies
+                                          where company != null && !string.IsNullOrEmpty(company.CompanyName)
+                                          select company.CompanyName).ToList();
+
+
+
+                companies = companies.TakeWhile(a => !ccftCompanyNames.Exists(b => b.ToLower() == a.ToLower())).ToList();
+
+                ccftCompanyNames.AddRange(companies);
+
+                ccftCompanyNames.Sort();
+
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
+                cbxCompany.Items.Add(items);
+                for (int i = 0; i < ccftCompanyNames.Count; i++)
+                {
+                    CCBoxItem item = new CCBoxItem(ccftCompanyNames[i], i + 1);
+                    cbxCompany.Items.Add(item);
+
+                }
+                // If more then 5 items, add a scroll bar to the dropdown.
+                cbxCompany.MaxDropDownItems = 20;
+                cbxCompany.DisplayMember = "Name";
+            }
+
+            if (cbxCadre != null)
+            {
+                List<string> ccftCadres = (from pds in EFERTDbUtility.mCCFTCentral.PersonalDataStrings
+                                           where pds != null && pds.PersonalDataFieldID == 12952 && pds.Value != null
+                                           select pds.Value).Distinct().ToList();
+
+                List<string> cadres = (from cadre in EFERTDbUtility.mEFERTDb.Cadres
+                                       where cadre != null && !string.IsNullOrEmpty(cadre.CadreName)
+                                       select cadre.CadreName).ToList();
+
+                cadres.Insert(0, string.Empty);
+
+                cadres = cadres.TakeWhile(a => !ccftCadres.Exists(b => b.ToLower() == a.ToLower())).ToList();
+
+                ccftCadres.AddRange(cadres);
+
+                ccftCadres.Sort();
+
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
+                cbxCadre.Items.Add(items);
+                for (int i = 0; i < ccftCadres.Count; i++)
+                {
+                    CCBoxItem item = new CCBoxItem(ccftCadres[i], i + 1);
+                    cbxCadre.Items.Add(item);
+                }
+                // If more then 5 items, add a scroll bar to the dropdown.
+                cbxCadre.MaxDropDownItems = 20;
+                cbxCadre.DisplayMember = "Name";
+            }
+
+            if (cbxCrew != null)
+            {
+                List<string> crews = (from pds in EFERTDbUtility.mCCFTCentral.PersonalDataStrings
+                                      where pds != null && pds.PersonalDataFieldID == 12869 && pds.Value != null
+                                      select pds.Value).Distinct().ToList();
+
+                crews.Insert(0, string.Empty);
+
+                crews.Sort();
+
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
+                cbxCrew.Items.Add(items);
+                for (int i = 0; i < crews.Count; i++)
+                {
+                    CCBoxItem item = new CCBoxItem(crews[i], i + 1);
+                    cbxCrew.Items.Add(item);
+
+                }
+                // If more then 5 items, add a scroll bar to the dropdown.
+                cbxCrew.MaxDropDownItems = 20;
+                cbxCrew.DisplayMember = "Name";
+
+            }
+
+        }
+
     }
+
+
+
 
     public enum LimitStatus
     {

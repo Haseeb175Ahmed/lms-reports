@@ -45,11 +45,11 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tbxCnic = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.cbxCompany = new System.Windows.Forms.ComboBox();
+            this.cbxCompany = new CheckedComboBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.cbxCadre = new System.Windows.Forms.ComboBox();
+            this.cbxCadre = new CheckedComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.cbxCrew = new System.Windows.Forms.ComboBox();
+            this.cbxCrew = new CheckedComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tbxCarNumber = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -57,10 +57,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tbxName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.cbxSections = new System.Windows.Forms.ComboBox();
+            this.cbxSections = new CheckedComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cbxDepartments = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.cbxDepartments = new CheckedComboBox();
+            this.label3 = new System.Windows.Forms.Label();         
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbxLateTimeRange.SuspendLayout();
@@ -70,7 +70,7 @@
             // btnGenerate
             // 
             this.btnGenerate.Location = new System.Drawing.Point(593, 319);
-            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(151, 59);
             this.btnGenerate.TabIndex = 0;
@@ -82,7 +82,7 @@
             // 
             this.dtpFromDate.CustomFormat = "";
             this.dtpFromDate.Location = new System.Drawing.Point(8, 21);
-            this.dtpFromDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpFromDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpFromDate.Name = "dtpFromDate";
             this.dtpFromDate.Size = new System.Drawing.Size(260, 22);
             this.dtpFromDate.TabIndex = 1;
@@ -98,9 +98,9 @@
             // 
             this.groupBox1.Controls.Add(this.dtpFromDate);
             this.groupBox1.Location = new System.Drawing.Point(19, 255);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(280, 53);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
@@ -110,7 +110,7 @@
             // 
             this.dtpToDate.CustomFormat = "";
             this.dtpToDate.Location = new System.Drawing.Point(8, 21);
-            this.dtpToDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpToDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpToDate.Name = "dtpToDate";
             this.dtpToDate.Size = new System.Drawing.Size(263, 22);
             this.dtpToDate.TabIndex = 1;
@@ -119,9 +119,9 @@
             // 
             this.groupBox2.Controls.Add(this.dtpToDate);
             this.groupBox2.Location = new System.Drawing.Point(457, 255);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(281, 53);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
@@ -131,7 +131,7 @@
             // 
             this.dtpLateTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpLateTimeStart.Location = new System.Drawing.Point(55, 23);
-            this.dtpLateTimeStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpLateTimeStart.Margin = new System.Windows.Forms.Padding(4);
             this.dtpLateTimeStart.Name = "dtpLateTimeStart";
             this.dtpLateTimeStart.ShowUpDown = true;
             this.dtpLateTimeStart.Size = new System.Drawing.Size(127, 22);
@@ -145,9 +145,9 @@
             this.gbxLateTimeRange.Controls.Add(this.dtpLateTimeEnd);
             this.gbxLateTimeRange.Controls.Add(this.dtpLateTimeStart);
             this.gbxLateTimeRange.Location = new System.Drawing.Point(19, 319);
-            this.gbxLateTimeRange.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbxLateTimeRange.Margin = new System.Windows.Forms.Padding(4);
             this.gbxLateTimeRange.Name = "gbxLateTimeRange";
-            this.gbxLateTimeRange.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbxLateTimeRange.Padding = new System.Windows.Forms.Padding(4);
             this.gbxLateTimeRange.Size = new System.Drawing.Size(391, 64);
             this.gbxLateTimeRange.TabIndex = 4;
             this.gbxLateTimeRange.TabStop = false;
@@ -177,7 +177,7 @@
             // 
             this.dtpLateTimeEnd.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpLateTimeEnd.Location = new System.Drawing.Point(248, 23);
-            this.dtpLateTimeEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpLateTimeEnd.Margin = new System.Windows.Forms.Padding(4);
             this.dtpLateTimeEnd.Name = "dtpLateTimeEnd";
             this.dtpLateTimeEnd.ShowUpDown = true;
             this.dtpLateTimeEnd.Size = new System.Drawing.Size(127, 22);
@@ -185,7 +185,7 @@
             this.dtpLateTimeEnd.Value = new System.DateTime(2017, 2, 20, 8, 0, 0, 0);
             // 
             // groupBox4
-            // 
+            //           
             this.groupBox4.Controls.Add(this.tbxCnic);
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.cbxCompany);
@@ -205,9 +205,9 @@
             this.groupBox4.Controls.Add(this.cbxDepartments);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Location = new System.Drawing.Point(19, 15);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(720, 233);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
@@ -216,7 +216,7 @@
             // tbxCnic
             // 
             this.tbxCnic.Location = new System.Drawing.Point(105, 23);
-            this.tbxCnic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbxCnic.Margin = new System.Windows.Forms.Padding(4);
             this.tbxCnic.Name = "tbxCnic";
             this.tbxCnic.Size = new System.Drawing.Size(245, 22);
             this.tbxCnic.TabIndex = 21;
@@ -233,13 +233,16 @@
             // 
             // cbxCompany
             // 
-            this.cbxCompany.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+           
             this.cbxCompany.FormattingEnabled = true;
             this.cbxCompany.Location = new System.Drawing.Point(460, 166);
-            this.cbxCompany.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbxCompany.Margin = new System.Windows.Forms.Padding(4);
             this.cbxCompany.Name = "cbxCompany";
-            this.cbxCompany.Size = new System.Drawing.Size(249, 24);
-            this.cbxCompany.TabIndex = 19;
+            this.cbxCompany.Size = new System.Drawing.Size(249, 24);           
+            this.cbxCompany.TabIndex = 19;          
+            this.cbxCompany.ValueSeparator = ", ";
+            this.cbxCompany.CheckOnClick = true;
+            this.cbxCompany.IntegralHeight = false;
             // 
             // label10
             // 
@@ -250,17 +253,20 @@
             this.label10.Size = new System.Drawing.Size(67, 17);
             this.label10.TabIndex = 18;
             this.label10.Text = "Company";
-           
+
             // 
             // cbxCadre
             // 
-            this.cbxCadre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+           
             this.cbxCadre.FormattingEnabled = true;
             this.cbxCadre.Location = new System.Drawing.Point(459, 55);
-            this.cbxCadre.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbxCadre.Margin = new System.Windows.Forms.Padding(4);
             this.cbxCadre.Name = "cbxCadre";
             this.cbxCadre.Size = new System.Drawing.Size(249, 24);
             this.cbxCadre.TabIndex = 17;
+            this.cbxCadre.ValueSeparator = ", ";
+            this.cbxCadre.CheckOnClick = true;
+            this.cbxCadre.IntegralHeight = false;
             // 
             // label9
             // 
@@ -274,13 +280,16 @@
             // 
             // cbxCrew
             // 
-            this.cbxCrew.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            
             this.cbxCrew.FormattingEnabled = true;
             this.cbxCrew.Location = new System.Drawing.Point(460, 93);
-            this.cbxCrew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbxCrew.Margin = new System.Windows.Forms.Padding(4);
             this.cbxCrew.Name = "cbxCrew";
             this.cbxCrew.Size = new System.Drawing.Size(251, 24);
             this.cbxCrew.TabIndex = 15;
+            this.cbxCrew.ValueSeparator = ", ";
+            this.cbxCrew.CheckOnClick = true;
+            this.cbxCrew.IntegralHeight = false;
             // 
             // label8
             // 
@@ -295,7 +304,7 @@
             // tbxCarNumber
             // 
             this.tbxCarNumber.Location = new System.Drawing.Point(101, 114);
-            this.tbxCarNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbxCarNumber.Margin = new System.Windows.Forms.Padding(4);
             this.tbxCarNumber.Name = "tbxCarNumber";
             this.tbxCarNumber.Size = new System.Drawing.Size(249, 22);
             this.tbxCarNumber.TabIndex = 13;
@@ -313,7 +322,7 @@
             // tbxPNumber
             // 
             this.tbxPNumber.Location = new System.Drawing.Point(101, 156);
-            this.tbxPNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbxPNumber.Margin = new System.Windows.Forms.Padding(4);
             this.tbxPNumber.Name = "tbxPNumber";
             this.tbxPNumber.Size = new System.Drawing.Size(249, 22);
             this.tbxPNumber.TabIndex = 11;
@@ -331,7 +340,7 @@
             // tbxName
             // 
             this.tbxName.Location = new System.Drawing.Point(105, 68);
-            this.tbxName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbxName.Margin = new System.Windows.Forms.Padding(4);
             this.tbxName.Name = "tbxName";
             this.tbxName.Size = new System.Drawing.Size(245, 22);
             this.tbxName.TabIndex = 9;
@@ -348,13 +357,16 @@
             // 
             // cbxSections
             // 
-            this.cbxSections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+           
             this.cbxSections.FormattingEnabled = true;
             this.cbxSections.Location = new System.Drawing.Point(459, 16);
-            this.cbxSections.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbxSections.Margin = new System.Windows.Forms.Padding(4);
             this.cbxSections.Name = "cbxSections";
             this.cbxSections.Size = new System.Drawing.Size(249, 24);
             this.cbxSections.TabIndex = 7;
+            this.cbxSections.ValueSeparator = ", ";
+            this.cbxSections.CheckOnClick = true;
+            this.cbxSections.IntegralHeight = false;
             // 
             // label4
             // 
@@ -365,17 +377,19 @@
             this.label4.Size = new System.Drawing.Size(55, 17);
             this.label4.TabIndex = 6;
             this.label4.Text = "Section";
-           
             // 
             // cbxDepartments
             // 
-            this.cbxDepartments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            
             this.cbxDepartments.FormattingEnabled = true;
             this.cbxDepartments.Location = new System.Drawing.Point(459, 129);
-            this.cbxDepartments.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbxDepartments.Margin = new System.Windows.Forms.Padding(4);
             this.cbxDepartments.Name = "cbxDepartments";
             this.cbxDepartments.Size = new System.Drawing.Size(251, 24);
             this.cbxDepartments.TabIndex = 5;
+            this.cbxDepartments.ValueSeparator = ", ";
+            this.cbxDepartments.CheckOnClick = true;
+            this.cbxDepartments.IntegralHeight = false;
             // 
             // label3
             // 
@@ -385,7 +399,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 17);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Department";
+            this.label3.Text = "Department";           
             // 
             // Form1
             // 
@@ -399,7 +413,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnGenerate);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -432,9 +446,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.ComboBox cbxDepartments;
+        private CheckedComboBox cbxDepartments;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbxSections;
+        private CheckedComboBox cbxSections;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbxPNumber;
         private System.Windows.Forms.Label label6;
@@ -442,14 +456,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbxCarNumber;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox cbxCrew;
+        private CheckedComboBox cbxCrew;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox cbxCadre;
+        private CheckedComboBox cbxCadre;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tbxCnic;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox cbxCompany;
-        private System.Windows.Forms.Label label10;
+        private CheckedComboBox cbxCompany;
+        private System.Windows.Forms.Label label10;       
     }
 }
 
