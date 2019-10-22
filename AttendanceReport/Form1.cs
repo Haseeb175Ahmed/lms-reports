@@ -129,6 +129,36 @@ namespace AttendanceReport
                 //                }
                 //            }
                 //        },
+                //            new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,07,08,05,44,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 14716
+                //                }
+                //            }
+                //        },
+                //             new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,22,08,30,31,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
+                //                new CCFTEvent.Event() {
+                //            EventType = 20001,
+                //            OccurrenceTime = new DateTime(2019,10,23,08,29,31,DateTimeKind.Utc),
+                //            RelatedItems = new List<RelatedItem>() {
+                //                new RelatedItem() {
+                //                    RelationCode = 0,
+                //                    FTItemID = 1046
+                //                }
+                //            }
+                //        },
                 //    new CCFTEvent.Event() {
                 //        EventType = 20001,
                 //        OccurrenceTime = new DateTime(2018,10,07,09,43,20,DateTimeKind.Utc),
@@ -149,53 +179,53 @@ namespace AttendanceReport
                 //            }
                 //        }
                 //    },
-                    // new CCFTEvent.Event() {
-                    //    EventType = 20001,
-                    //    OccurrenceTime = new DateTime(2018,09,16,10,15,09,DateTimeKind.Utc),
-                    //    RelatedItems = new List<RelatedItem>() {
-                    //        new RelatedItem() {
-                    //            RelationCode = 0,
-                    //            FTItemID = 1046
-                    //        }
-                    //    }
-                    //},
-                    //   new CCFTEvent.Event() {
-                    //    EventType = 20003,
-                    //    OccurrenceTime = new DateTime(2018,09,16,11,58,09,DateTimeKind.Utc),
-                    //    RelatedItems = new List<RelatedItem>() {
-                    //        new RelatedItem() {
-                    //            RelationCode = 0,
-                    //            FTItemID = 1046
-                    //        }
-                    //    }
-                    //},
-                    //    new CCFTEvent.Event() {
-                    //    EventType = 20001,
-                    //    OccurrenceTime = new DateTime(2018,09,16,1,15,09,DateTimeKind.Utc),
-                    //    RelatedItems = new List<RelatedItem>() {
-                    //        new RelatedItem() {
-                    //            RelationCode = 0,
-                    //            FTItemID = 1046
-                    //        }
-                    //    }
-                    //},
-                    //   new CCFTEvent.Event() {
-                    //    EventType = 20003,
-                    //    OccurrenceTime = new DateTime(2018,09,16,1,58,09,DateTimeKind.Utc),
-                    //    RelatedItems = new List<RelatedItem>() {
-                    //        new RelatedItem() {
-                    //            RelationCode = 0,
-                    //            FTItemID = 1046
-                    //        }
-                    //    }
-                    //},
-                     //};
+                //     new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,10,15,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 1046
+                //            }
+                //        }
+                //    },
+                //       new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,11,58,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 1046
+                //            }
+                //        }
+                //    },
+                //        new CCFTEvent.Event() {
+                //        EventType = 20001,
+                //        OccurrenceTime = new DateTime(2018,09,16,1,15,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 1046
+                //            }
+                //        }
+                //    },
+                //       new CCFTEvent.Event() {
+                //        EventType = 20003,
+                //        OccurrenceTime = new DateTime(2018,09,16,1,58,09,DateTimeKind.Utc),
+                //        RelatedItems = new List<RelatedItem>() {
+                //            new RelatedItem() {
+                //                RelationCode = 0,
+                //                FTItemID = 1046
+                //            }
+                //        }
+                //    },
+                 //    };
 
-                    #endregion
+                #endregion
 
 
 
-                    List<int> inIds = new List<int>();
+                List<int> inIds = new List<int>();
                 //date and ftitemid of person an thier event entries
                 Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>> lstChlEvents = new Dictionary<DateTime, Dictionary<int, List<CCFTEvent.Event>>>();
 
@@ -331,7 +361,11 @@ namespace AttendanceReport
                                 }
                             }
 
-                            if (!string.IsNullOrEmpty(section))
+                            if (string.IsNullOrEmpty(section))
+                            {
+                                continue;
+                            }
+                            else
                             {
                                 bool isValidEntry = this.isValidEntry(filterBySection, section);
                                 if (!isValidEntry)
@@ -358,7 +392,11 @@ namespace AttendanceReport
                                 }
                             }
 
-                            if (!string.IsNullOrEmpty(cadre))
+                            if (string.IsNullOrEmpty(cadre))
+                            {
+                                continue;
+                            }
+                            else
                             {
                                 bool isValidEntry = this.isValidEntry(filterByCadre, cadre);
                                 if (!isValidEntry)
@@ -378,7 +416,11 @@ namespace AttendanceReport
                                 crew = checkInAndOutInfo.CardHolderInfos.Crew.CrewName;
                             }
                            
-                            if (!string.IsNullOrEmpty(crew))
+                            if (string.IsNullOrEmpty(crew))
+                            {
+                                continue;
+                            }
+                            else
                             {
                                 bool isValidEntry = this.isValidEntry(filterByCrew, crew);
                                 if (!isValidEntry)
@@ -413,6 +455,10 @@ namespace AttendanceReport
                                     continue;
                                 }
                             }
+                            else
+                            {
+                                continue;
+                            }
                         }
 
                         //filterByCompany
@@ -442,6 +488,10 @@ namespace AttendanceReport
                                 {
                                     continue;
                                 }
+                            }
+                            else
+                            {
+                                continue;
                             }
                         }
 
@@ -1420,15 +1470,26 @@ namespace AttendanceReport
                                     CardHolderReportInfo cardHolderReportInfo = lstcardHolderReportInfo[j];
                                     if (lstDepartment.Contains(cardHolderReportInfo.Department))
                                     {
-                                        
-                                        TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                        TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
+                                        TimeSpan timeDiff = timeofDay - thStartTime;
                                         string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                        if (timeDiff.Seconds > 30)
+                                        if (timeofDay.Seconds > 30)
                                         {
-                                            int minute = timeDiff.Minutes + 1;
-                                            diff = timeDiff.Hours + ":" + minute;
+                                            if (timeDiff.Minutes <= 59)
+                                            {
+                                                int minute = timeDiff.Minutes + 1;
+                                                diff = timeDiff.Hours + ":" + minute;
+                                            }
+                                            else
+                                            {
+                                                if (timeDiff.Minutes == 60)
+                                                {
+                                                    int hour = timeDiff.Hours + 1;
+                                                    diff = hour + ":" + 1;
+                                                }
+                                            }
                                         }
-                                        
+
                                         cardHolderReportInfo.LateTime = diff;
                                         lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);                                        
                                     }
@@ -1443,7 +1504,7 @@ namespace AttendanceReport
                                             this.AddDepartmentRow(table, lstDepartmentWiseReportInfo[0].Department);
                                             this.AddTableHeaderRow(table);
                                            
-                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderBy(o => o.OccurrenceTime.TimeOfDay).ToList();
                                             for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
                                             {
                                                 CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
@@ -1452,27 +1513,51 @@ namespace AttendanceReport
 
                                             this.AddNewEmptyRow(table);
 
-                                           
-                                            TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                            TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
+                                            TimeSpan timeDiff = timeofDay - thStartTime;
                                             string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                            if (timeDiff.Seconds > 30)
+                                            if (timeofDay.Seconds > 30)
                                             {
-                                                int minute = timeDiff.Minutes + 1;
-                                                diff = timeDiff.Hours + ":" + minute;
+                                                if (timeDiff.Minutes <= 59)
+                                                {
+                                                    int minute = timeDiff.Minutes + 1;
+                                                    diff = timeDiff.Hours + ":" + minute;
+                                                }
+                                                else
+                                                {
+                                                    if (timeDiff.Minutes == 60)
+                                                    {
+                                                        int hour = timeDiff.Hours + 1;
+                                                        diff = hour + ":" + 1;
+                                                    }
+                                                }
                                             }
+
+
                                             cardHolderReportInfo.LateTime = diff;
                                             lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
                                             lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
                                         }
                                         else
                                         {
-                                           
+                                            TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
                                             TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
                                             string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                            if (timeDiff.Seconds > 30)
+                                            if (timeofDay.Seconds > 30)
                                             {
-                                                int minute = timeDiff.Minutes + 1;
-                                                diff = timeDiff.Hours + ":" + minute;
+                                                if (timeDiff.Minutes <= 59)
+                                                {
+                                                    int minute = timeDiff.Minutes + 1;
+                                                    diff = timeDiff.Hours + ":" + minute;
+                                                }
+                                                else
+                                                {
+                                                    if (timeDiff.Minutes == 60)
+                                                    {
+                                                        int hour = timeDiff.Hours + 1;
+                                                        diff = hour + ":" + 1;
+                                                    }
+                                                }
                                             }
                                             cardHolderReportInfo.LateTime = diff;
                                             lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
@@ -1487,7 +1572,7 @@ namespace AttendanceReport
                                             //Department
                                             this.AddDepartmentRow(table, lstDepartmentWiseReportInfo[0].Department);
                                             this.AddTableHeaderRow(table);
-                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                            lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderBy(o => o.OccurrenceTime.TimeOfDay).ToList();
                                             for (int i = 0; i < lstDepartmentWiseReportInfo.Count; i++)
                                             {
                                                 CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
@@ -1635,13 +1720,25 @@ namespace AttendanceReport
                             if (lstDepartment.Contains(cardHolderReportInfo.Department))
                             {
 
-                                TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
+                                TimeSpan timeDiff = timeofDay - thStartTime;
                                 string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                if (timeDiff.Seconds > 30)
+                                if (timeofDay.Seconds > 30)
                                 {
-                                    int minute = timeDiff.Minutes + 1;
-                                    diff = timeDiff.Hours + ":" + minute;
-                                }
+                                    if (timeDiff.Minutes <= 59)
+                                    {
+                                        int minute = timeDiff.Minutes + 1;
+                                        diff = timeDiff.Hours + ":" + minute;
+                                    }
+                                    else
+                                    {
+                                        if (timeDiff.Minutes == 60)
+                                        {
+                                            int hour = timeDiff.Hours + 1;
+                                            diff = hour + ":" + 1;
+                                        }
+                                    }                                   
+                                }                               
 
                                 cardHolderReportInfo.LateTime = diff;
                                 lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
@@ -1667,7 +1764,7 @@ namespace AttendanceReport
 
                                         row++;
 
-                                        lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                        lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderBy(o => o.OccurrenceTime.TimeOfDay).ToList();
                                         work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                                         work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                                         work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
@@ -1722,14 +1819,32 @@ namespace AttendanceReport
                                             work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                                         
                                             CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
+                                        int minute = chl.OccurrenceTime.TimeOfDay.Minutes;
+                                        int hour = chl.OccurrenceTime.TimeOfDay.Hours;
 
+                                        TimeSpan timeofDay1 = chl.OccurrenceTime.TimeOfDay;
+
+                                        if (timeofDay1.Seconds > 30)
+                                        {
+                                            if (timeofDay1.Minutes <= 59)
+                                            {
+                                                minute = timeofDay1.Minutes + 1;
+                                            }
+                                            else
+                                            {
+                                                if (timeofDay1.Minutes == 60)
+                                                {
+                                                    hour = timeofDay1.Hours + 1;
+                                                }
+                                            }
+                                        }
                                         work.Cells[row, 1].Value = i + 1;
                                         work.Cells[row, 2].Value = chl.FirstName;
                                         work.Cells[row, 3].Value = chl.Section;
                                         work.Cells[row, 4].Value = chl.Cadre;
-                                        work.Cells[row, 5].Value = chl.PNumber;
+                                        work.Cells[row, 5].Value =  Convert.ToInt32(chl.PNumber);
                                         work.Cells[row, 6].Value = chl.OccurrenceTime.ToShortDateString();
-                                        work.Cells[row, 7].Value = chl.OccurrenceTime.TimeOfDay.ToString();
+                                        work.Cells[row, 7].Value = hour + ":" + minute;
                                         work.Cells[row, 8].Value = chl.LateTime;
 
                                         work.Row(row).Height = 20;
@@ -1737,16 +1852,29 @@ namespace AttendanceReport
 
                                         row++;
                                         row++;
-                                    
 
 
-                                    TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+
+                                    TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
+                                    TimeSpan timeDiff = timeofDay - thStartTime;
                                     string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                    if (timeDiff.Seconds > 30)
+                                    if (timeofDay.Seconds > 30)
                                     {
-                                        int minute = timeDiff.Minutes + 1;
-                                        diff = timeDiff.Hours + ":" + minute;
+                                        if (timeDiff.Minutes <= 59)
+                                        {
+                                            int minute = timeDiff.Minutes + 1;
+                                            diff = timeDiff.Hours + ":" + minute;
+                                        }
+                                        else
+                                        {
+                                            if (timeDiff.Minutes == 60)
+                                            {
+                                                int hour = timeDiff.Hours + 1;
+                                                diff = hour + ":" + 1;
+                                            }
+                                        }
                                     }
+
                                     cardHolderReportInfo.LateTime = diff;
                                     lstDepartmentWiseReportInfo = new List<CardHolderReportInfo>();
                                     lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
@@ -1754,12 +1882,24 @@ namespace AttendanceReport
                                 else
                                 {
 
-                                    TimeSpan timeDiff = cardHolderReportInfo.OccurrenceTime.TimeOfDay - thStartTime;
+                                    TimeSpan timeofDay = cardHolderReportInfo.OccurrenceTime.TimeOfDay;
+                                    TimeSpan timeDiff = timeofDay - thStartTime;
                                     string diff = timeDiff.Hours + ":" + timeDiff.Minutes;
-                                    if (timeDiff.Seconds > 30)
+                                    if (timeofDay.Seconds > 30)
                                     {
-                                        int minute = timeDiff.Minutes + 1;
-                                        diff = timeDiff.Hours + ":" + minute;
+                                        if (timeDiff.Minutes <= 59)
+                                        {
+                                            int minute = timeDiff.Minutes + 1;
+                                            diff = timeDiff.Hours + ":" + minute;
+                                        }
+                                        else
+                                        {
+                                            if (timeDiff.Minutes == 60)
+                                            {
+                                                int hour = timeDiff.Hours + 1;
+                                                diff = hour + ":" + 1;
+                                            }
+                                        }
                                     }
                                     cardHolderReportInfo.LateTime = diff;
                                     lstDepartmentWiseReportInfo.Add(cardHolderReportInfo);
@@ -1784,7 +1924,7 @@ namespace AttendanceReport
 
                                     row++;
 
-                                    lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderByDescending(o => o.LateTime).ToList();
+                                    lstDepartmentWiseReportInfo = lstDepartmentWiseReportInfo.OrderBy(o => o.OccurrenceTime.TimeOfDay).ToList();
                                     work.Cells[row, 1, row, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                                     work.Cells[row, 1, row, 8].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                                     work.Cells[row, 1, row, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
@@ -1838,17 +1978,35 @@ namespace AttendanceReport
                                         work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                                         work.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                                         
-
+                                       
 
                                         CardHolderReportInfo chl = lstDepartmentWiseReportInfo[i];
-                                       
+                                        int minute = chl.OccurrenceTime.TimeOfDay.Minutes;
+                                        int hour = chl.OccurrenceTime.TimeOfDay.Hours;
+
+                                        TimeSpan timeofDay = chl.OccurrenceTime.TimeOfDay;
+
+                                        if (timeofDay.Seconds > 30)
+                                        {
+                                            if (timeofDay.Minutes <= 59)
+                                            {
+                                                minute = timeofDay.Minutes + 1;
+                                            }
+                                            else
+                                            {
+                                                if (timeofDay.Minutes == 60)
+                                                {
+                                                    hour = timeofDay.Hours + 1;
+                                                }
+                                            }
+                                        }
                                         work.Cells[row, 1].Value = i + 1;
                                         work.Cells[row, 2].Value = chl.FirstName;
                                         work.Cells[row, 3].Value = chl.Section;
                                         work.Cells[row, 4].Value = chl.Cadre;
-                                        work.Cells[row, 5].Value = chl.PNumber;
+                                        work.Cells[row, 5].Value = Convert.ToInt32(chl.PNumber);
                                         work.Cells[row, 6].Value = chl.OccurrenceTime.ToShortDateString();
-                                        work.Cells[row, 7].Value = chl.OccurrenceTime.TimeOfDay.ToString();
+                                        work.Cells[row, 7].Value = hour + ":"+minute;
                                         work.Cells[row, 8].Value = chl.LateTime;
 
                                         work.Row(row).Height = 20;
@@ -2193,7 +2351,26 @@ namespace AttendanceReport
                 return;
             }
 
+            int minute = chl.OccurrenceTime.TimeOfDay.Minutes;
+            int hour = chl.OccurrenceTime.TimeOfDay.Hours;
+
+            TimeSpan timeofDay = chl.OccurrenceTime.TimeOfDay;
            
+            if (timeofDay.Seconds > 30)
+            {
+                if (timeofDay.Minutes <= 59)
+                {
+                     minute = timeofDay.Minutes + 1;                   
+                }
+                else
+                {
+                    if (timeofDay.Minutes == 60)
+                    {
+                         hour = timeofDay.Hours + 1;
+                    }
+                }
+            }
+
 
             table.StartNewRow();
 
@@ -2245,7 +2422,7 @@ namespace AttendanceReport
             SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
 
             table.AddCell(new Cell().
-                Add(new Paragraph(string.IsNullOrEmpty(chl.OccurrenceTime.TimeOfDay.ToString()) ? string.Empty : chl.OccurrenceTime.TimeOfDay.ToString()).
+                Add(new Paragraph(string.IsNullOrEmpty(chl.OccurrenceTime.TimeOfDay.ToString()) ? string.Empty : hour + ":"+ minute).
                 SetFontSize(11F)).
             SetBackgroundColor(altRow ? new DeviceRgb(211, 211, 211) : iText.Kernel.Colors.Color.WHITE).
             SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).

@@ -27,6 +27,7 @@ namespace AttendanceReport
         //              Department          Section             Cadre             CNIC Number
         private Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, List<CardHolderReportInfo>>>>> mData = null;
 
+
         public LMSAttendanceReportForm()
         {
             InitializeComponent();
@@ -512,7 +513,6 @@ namespace AttendanceReport
 
             #endregion
 
-            //MessageBox.Show(this, "Events Found:" + lstEvents.Count);
             List<int> inIds = new List<int>();
             List<int> outIds = new List<int>();
 
@@ -599,21 +599,17 @@ namespace AttendanceReport
                 }
             }
 
-            //MessageBox.Show(this, "In Events Found Keys: " + lstChlInEvents.Keys.Count + " Values: " + lstChlInEvents.Values.Count);
-            //MessageBox.Show(this, "Out Events Found Keys: " + lstChlOutEvents.Keys.Count + " Values: " + lstChlOutEvents.Values.Count);
-
+           
             inCardHolders = (from chl in EFERTDbUtility.mCCFTCentral.Cardholders
                              where chl != null && inIds.Contains(chl.FTItemID)
                              select chl).Distinct().ToDictionary(ch => ch.FTItemID, ch => ch);
 
-            //MessageBox.Show(this, "In CHls Found Keys: " + inCardHolders.Keys.Count + " Values: " + inCardHolders.Values.Count);
-
+            
             List<string> strLstTempCards = (from chl in inCardHolders
                                             where chl.Value != null && (chl.Value.FirstName.ToLower().StartsWith("t-") || chl.Value.FirstName.ToLower().StartsWith("v-") || chl.Value.FirstName.ToLower().StartsWith("temporary-") || chl.Value.FirstName.ToLower().StartsWith("visitor-"))
                                             select chl.Value.LastName).ToList();
 
-            //MessageBox.Show(this, "Temp Cards found: " + strLstTempCards.Count);
-
+            
             List<CheckInAndOutInfo> filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
                                                         where checkin != null && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
                                                             strLstTempCards.Contains(checkin.CardNumber) &&

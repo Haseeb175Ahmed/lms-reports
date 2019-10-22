@@ -26,6 +26,7 @@ namespace AttendanceReport
         public AlarmedListReportForm()
         {
             InitializeComponent();
+            EFERTDbUtility.InitializeDatabases();
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
@@ -77,7 +78,7 @@ namespace AttendanceReport
                     category = string.IsNullOrEmpty(category) ? "Unknown" : category;
                     string firstName = cardHolder.FirstName;
                     string cnicNumber = cardHolder.CNICNumber;
-                    string companyName = cardHolder.Company.CompanyName; 
+                    string companyName = !Object.ReferenceEquals(null, cardHolder.Company) ?  cardHolder.Company.CompanyName : "Test"; 
                     string blockedStatus = limitStatus == LimitStatus.LimitReached? "Blocked" : "Alarmed" ;
 
 
@@ -470,12 +471,18 @@ namespace AttendanceReport
 
                                 CardHolderReportInfo chl = category.Value[i];
 
-                                work.Cells[row, 1].Value = chl.Category;
-                                work.Cells[row, 2].Value = chl.FirstName;
-                                work.Cells[row, 3].Value = chl.CNICNumber;
-                                work.Cells[row, 4].Value = chl.BlockedStatus;
-                                work.Cells[row, 5].Value = chl.Company;
-                                work.Cells[row, 6].Value = chl.TotalDaysCkekin;
+
+                               
+                                work.Cells[row, 1].Value = !Object.ReferenceEquals(null, chl.Category) ? chl.Category.ToString() : "Not Defined";
+                                work.Cells[row, 2].Value = !Object.ReferenceEquals(null, chl.FirstName) ? chl.FirstName.ToString() : "Not Defined";
+                                work.Cells[row, 3].Value = !Object.ReferenceEquals(null, chl.CNICNumber) ? chl.CNICNumber.ToString() : "Not Defined";
+                                work.Cells[row, 4].Value = !Object.ReferenceEquals(null, chl.BlockedStatus) ? chl.BlockedStatus.ToString() : "Not Defined";
+                                work.Cells[row, 5].Value = !Object.ReferenceEquals(null, chl.Company) ? chl.Company.ToString() : "Not Defined";
+                                work.Cells[row, 6].Value = !Object.ReferenceEquals(null, chl.TotalDaysCkekin) ? chl.TotalDaysCkekin.ToString() : "Not Defined";
+
+
+
+
 
                                 work.Row(row).Height = 20;
                             }

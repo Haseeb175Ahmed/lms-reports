@@ -228,7 +228,7 @@ namespace AttendanceReport {
                // Debug.WriteLine("OnDeactivate");
                 base.OnDeactivate(e);
 
-                bool checkState = cclb.GetItemChecked(0);
+                bool checkState = cclb.Items.Count>0?cclb.GetItemChecked(0):false;
                 if (checkState)
                 {
                     for (int i = 0; i < cclb.Items.Count; i++)

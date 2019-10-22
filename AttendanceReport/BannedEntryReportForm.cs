@@ -26,6 +26,7 @@ namespace AttendanceReport
         public BannedEntryReportForm()
         {
             InitializeComponent();
+            EFERTDbUtility.InitializeDatabases();
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
@@ -129,99 +130,6 @@ namespace AttendanceReport
             else if (extension == ".xlsx")
             {
                 this.SaveAsExcel(this.mLstCardHolders, "Banned Worker Report", "Banned Worker Report");
-            }
-        }
-
-        private void SaveAsPdf(Dictionary<string, List<CardHolderReportInfo>> data, string heading)
-        {
-            Cursor currentCursor = Cursor.Current;
-
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                if (data != null)
-                {
-                    using (PdfWriter pdfWriter = new PdfWriter(this.saveFileDialog1.FileName))
-                    {
-                        using (PdfDocument pdfDocument = new PdfDocument(pdfWriter))
-                        {
-                            using (Document doc = new Document(pdfDocument))
-                            {
-                                doc.SetFont(PdfFontFactory.CreateFont("Fonts/SEGOEUIL.TTF"));
-                                string headerLeftText = "Report From: " + this.dtpFromDate.Value.ToShortDateString() + " To: " + this.dtpToDate.Value.ToShortDateString();
-                                string headerRightText = string.Empty;
-                                string footerLeftText = "This is computer generated report.";
-                                string footerRightText = "Report generated on: " + DateTime.Now.ToString();
-
-                                pdfDocument.AddEventHandler(PdfDocumentEvent.START_PAGE, new PdfHeaderAndFooter(doc, true, headerLeftText, headerRightText));
-                                pdfDocument.AddEventHandler(PdfDocumentEvent.END_PAGE, new PdfHeaderAndFooter(doc, false, footerLeftText, footerRightText));
-
-                                pdfDocument.SetDefaultPageSize(new iText.Kernel.Geom.PageSize(1400F, 842F));
-                                Table table = new Table((new List<float>() { 70F, 150F, 100F, 150F, 220F, 120F, 150F, 220F, 120F}).ToArray());
-
-                                table.SetWidth(1300F);
-                                table.SetFixedLayout();
-                                //Table table = new Table((new List<float>() { 8F, 100F, 150F, 225F, 60F, 40F, 100F, 125F, 150F }).ToArray());
-
-                                this.AddMainHeading(table, heading);
-
-                                this.AddNewEmptyRow(table);
-                                //this.AddNewEmptyRow(table);
-
-                                foreach (KeyValuePair<string, List<CardHolderReportInfo>> category in data)
-                                {
-                                    if (category.Value == null)
-                                    {
-                                        continue;
-                                    }
-
-                                    //Category
-                                    this.AddCategoryRow(table, category.Key);
-
-                                    //Data
-                                    //this.AddNewEmptyRow(table, false);
-
-                                    this.AddTableHeaderRow(table);
-
-                                    for (int i = 0; i < category.Value.Count; i++)
-                                    {
-                                        CardHolderReportInfo chl = category.Value[i];
-                                        this.AddTableDataRow(table, chl, i % 2 == 0);
-                                    }
-
-                                    this.AddNewEmptyRow(table);
-                                }
-
-
-
-                                doc.Add(table);
-
-                                doc.Close();
-                            }
-                        }
-
-                        System.Diagnostics.Process.Start(this.saveFileDialog1.FileName);
-                    }
-                }
-                Cursor.Current = currentCursor;
-            }
-            catch (Exception exp)
-            {
-                Cursor.Current = currentCursor;
-                if (exp.HResult == -2147024864)
-                {
-                    MessageBox.Show(this, "\"" + this.saveFileDialog1.FileName + "\" is already is use.\n\nPlease close it and generate report again.");
-                }
-                else
-                if (exp.HResult == -2147024891)
-                {
-                    MessageBox.Show(this, "You did not have rights to save file on selected location.\n\nPlease run as administrator.");
-                }
-                else
-                {
-                    MessageBox.Show(this, exp.Message);
-                }
-
             }
         }
 
@@ -388,15 +296,15 @@ namespace AttendanceReport
                                 //work.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
                                 CardHolderReportInfo chl = category.Value[i];
-                                work.Cells[row, 1].Value = chl.BlockedStatus;
-                                work.Cells[row, 2].Value = chl.FirstName;
-                                work.Cells[row, 3].Value = chl.CNICNumber;
-                                work.Cells[row, 4].Value = chl.BlockedBy.ToString();
-                                work.Cells[row, 4].Value = chl.BlockedReason.ToString();
-                                work.Cells[row, 4].Value = chl.BlockedTime.ToString();
-                                work.Cells[row, 4].Value = chl.UnBlockedBy.ToString();
-                                work.Cells[row, 4].Value = chl.UnBlockedReason.ToString();
-                                work.Cells[row, 5].Value = chl.UnBlockedTime.ToString();
+                                work.Cells[row, 1].Value =  !Object.ReferenceEquals(null, chl.BlockedStatus) ? chl.BlockedStatus.ToString() : "Not Defined";
+                                work.Cells[row, 2].Value =  !Object.ReferenceEquals(null, chl.FirstName) ? chl.FirstName.ToString() : "Not Defined";
+                                work.Cells[row, 3].Value =  !Object.ReferenceEquals(null, chl.CNICNumber) ? chl.CNICNumber.ToString() : "Not Defined";
+                                work.Cells[row, 4].Value = !Object.ReferenceEquals(null, chl.BlockedBy) ? chl.BlockedBy.ToString() : "Not Defined";
+                                work.Cells[row, 5].Value = !Object.ReferenceEquals(null, chl.BlockedReason) ? chl.BlockedReason.ToString() : "Not Defined";
+                                work.Cells[row, 6].Value =  !Object.ReferenceEquals(null, chl.BlockedTime) ? chl.BlockedTime.ToString() : "Not Defined";
+                                work.Cells[row, 7].Value = !Object.ReferenceEquals(null, chl.UnBlockedBy) ? chl.UnBlockedBy.ToString() : "Not Defined";
+                                work.Cells[row, 8].Value = !Object.ReferenceEquals(null, chl.UnBlockedReason) ? chl.UnBlockedReason.ToString() : "Not Defined";
+                                work.Cells[row, 9].Value = !Object.ReferenceEquals(null, chl.UnBlockedTime) ? chl.UnBlockedTime.ToString() : "Not Defined";
 
                                 work.Row(row).Height = 20;
                             }
@@ -435,6 +343,98 @@ namespace AttendanceReport
 
             }
 
+        }
+        private void SaveAsPdf(Dictionary<string, List<CardHolderReportInfo>> data, string heading)
+        {
+            Cursor currentCursor = Cursor.Current;
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (data != null)
+                {
+                    using (PdfWriter pdfWriter = new PdfWriter(this.saveFileDialog1.FileName))
+                    {
+                        using (PdfDocument pdfDocument = new PdfDocument(pdfWriter))
+                        {
+                            using (Document doc = new Document(pdfDocument))
+                            {
+                                doc.SetFont(PdfFontFactory.CreateFont("Fonts/SEGOEUIL.TTF"));
+                                string headerLeftText = "Report From: " + this.dtpFromDate.Value.ToShortDateString() + " To: " + this.dtpToDate.Value.ToShortDateString();
+                                string headerRightText = string.Empty;
+                                string footerLeftText = "This is computer generated report.";
+                                string footerRightText = "Report generated on: " + DateTime.Now.ToString();
+
+                                pdfDocument.AddEventHandler(PdfDocumentEvent.START_PAGE, new PdfHeaderAndFooter(doc, true, headerLeftText, headerRightText));
+                                pdfDocument.AddEventHandler(PdfDocumentEvent.END_PAGE, new PdfHeaderAndFooter(doc, false, footerLeftText, footerRightText));
+
+                                pdfDocument.SetDefaultPageSize(new iText.Kernel.Geom.PageSize(1400F, 842F));
+                                Table table = new Table((new List<float>() { 70F, 150F, 100F, 150F, 220F, 120F, 150F, 220F, 120F}).ToArray());
+
+                                table.SetWidth(1300F);
+                                table.SetFixedLayout();
+                                //Table table = new Table((new List<float>() { 8F, 100F, 150F, 225F, 60F, 40F, 100F, 125F, 150F }).ToArray());
+
+                                this.AddMainHeading(table, heading);
+
+                                this.AddNewEmptyRow(table);
+                                //this.AddNewEmptyRow(table);
+
+                                foreach (KeyValuePair<string, List<CardHolderReportInfo>> category in data)
+                                {
+                                    if (category.Value == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    //Category
+                                    this.AddCategoryRow(table, category.Key);
+
+                                    //Data
+                                    //this.AddNewEmptyRow(table, false);
+
+                                    this.AddTableHeaderRow(table);
+
+                                    for (int i = 0; i < category.Value.Count; i++)
+                                    {
+                                        CardHolderReportInfo chl = category.Value[i];
+                                        this.AddTableDataRow(table, chl, i % 2 == 0);
+                                    }
+
+                                    this.AddNewEmptyRow(table);
+                                }
+
+
+
+                                doc.Add(table);
+
+                                doc.Close();
+                            }
+                        }
+
+                        System.Diagnostics.Process.Start(this.saveFileDialog1.FileName);
+                    }
+                }
+                Cursor.Current = currentCursor;
+            }
+            catch (Exception exp)
+            {
+                Cursor.Current = currentCursor;
+                if (exp.HResult == -2147024864)
+                {
+                    MessageBox.Show(this, "\"" + this.saveFileDialog1.FileName + "\" is already is use.\n\nPlease close it and generate report again.");
+                }
+                else
+                if (exp.HResult == -2147024891)
+                {
+                    MessageBox.Show(this, "You did not have rights to save file on selected location.\n\nPlease run as administrator.");
+                }
+                else
+                {
+                    MessageBox.Show(this, exp.Message);
+                }
+
+            }
         }
 
         private void AddMainHeading(Table table, string heading)
@@ -528,84 +528,6 @@ namespace AttendanceReport
             }
 
         }
-
-        private void AddDepartmentRow(Table table, string departmentName)
-        {
-            table.StartNewRow();
-
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().
-                    Add(new Paragraph("Department:").
-                    SetFontSize(11F).
-                    SetBold().
-                    SetFontColor(new DeviceRgb(247, 150, 70))).
-                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
-                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
-                SetHeight(22F).
-                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().
-                    Add(new Paragraph(departmentName).
-                    SetFontSize(11F).SetUnderline()).
-                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
-                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
-                SetHeight(22F).
-                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-        }
-
-        private void AddCategoryRow(Table table, string categoryName)
-        {
-            table.StartNewRow();
-
-            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell(1, 1).
-                    Add(new Paragraph("Category:").
-                    SetFontSize(11F).
-                    SetBold().
-                    SetFontColor(new DeviceRgb(247, 150, 70))).
-                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
-                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
-                SetHeight(22F).
-                SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell(1, 5).
-                    Add(new Paragraph(categoryName).
-                    SetFontSize(11F)).
-                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
-                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
-                SetHeight(22F).
-                SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F)
-                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F)
-                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            table.AddCell(new Cell().SetHeight(22F)
-                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
-                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
-        }
-        
 
         private void AddTableHeaderRow(Table table)
         {
@@ -758,6 +680,91 @@ namespace AttendanceReport
                 SetBorder(new iText.Layout.Borders.SolidBorder(new DeviceRgb(247, 150, 70), 1)).
                 SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).
                 SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
+        }
+
+
+
+        private void AddDepartmentRow(Table table, string departmentName)
+        {
+            table.StartNewRow();
+
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().
+                    Add(new Paragraph("Department:").
+                    SetFontSize(11F).
+                    SetBold().
+                    SetFontColor(new DeviceRgb(247, 150, 70))).
+                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
+                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
+                SetHeight(22F).
+                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().
+                    Add(new Paragraph(departmentName).
+                    SetFontSize(11F).SetUnderline()).
+                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
+                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
+                SetHeight(22F).
+                SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+        }
+
+        private void AddCategoryRow(Table table, string categoryName)
+        {
+            table.StartNewRow();
+
+            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell(1, 1).
+                    Add(new Paragraph("Category:").
+                    SetFontSize(11F).
+                    SetBold().
+                    SetFontColor(new DeviceRgb(247, 150, 70))).
+                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
+                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
+                SetHeight(22F).
+                SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell(1, 5).
+                    Add(new Paragraph(categoryName).
+                    SetFontSize(11F)).
+                SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT).
+                SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE).
+                SetHeight(22F).
+                SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            //table.AddCell(new Cell().SetHeight(22F).SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+            //        SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F)
+                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F)
+                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            table.AddCell(new Cell().SetHeight(22F)
+                    .SetBorderLeft(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderTop(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)).
+                    SetBorderRight(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+            //table.AddCell(new Cell().SetHeight(22F).SetBorder(new iText.Layout.Borders.SolidBorder(iText.Kernel.Colors.Color.WHITE, 1)));
+        }
+
+
+        private void BannedEntryReportForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
