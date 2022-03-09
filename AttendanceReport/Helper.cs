@@ -197,46 +197,5 @@ namespace AttendanceReport
             return plainText;
         }
 
-        public static bool isValidEntry(string filtersCommaSep, string filterValue)
-        {
-            bool isValidEntry = true;
-            try
-            {
-                string value = filterValue.ToLower();
-
-                if (filtersCommaSep.ToLower().Contains(value))
-                {
-                    string[] filters = filtersCommaSep.Split(',');
-                    bool skip = true;
-                    for (int i = 0; i < filters.Length; i++)
-                    {
-                        string item = filters[i].Trim();
-                        if (value == item.ToLower())
-                        {
-                            skip = false;
-                            break;
-                        }
-                    }
-
-                    if (skip)
-                    {
-                        isValidEntry = false;
-                    }
-                }
-                else
-                {
-                    isValidEntry = false;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-
-            return isValidEntry;
-        }
-
     }
 }

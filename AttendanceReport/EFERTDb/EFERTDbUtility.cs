@@ -23,7 +23,7 @@ namespace AttendanceReport
 
         public static string CONST_SYSTEM_BLOCKED_BY = "System";
         public static string CONST_SYSTEM_LIMIT_REACHED_REASON = "System has block this person because maximum limit of temporary check in has reached.";
-        public static  string UNCHECK_ALL = "UnCheck All";
+
         public static void InitializeDatabases()
         {
             mEFERTDb = new EFERTDbContext();
@@ -422,14 +422,13 @@ namespace AttendanceReport
                                             select depart.DepartmentName).ToList();
 
                 departments.Insert(0, string.Empty);
-                
 
                 departments = departments.TakeWhile(a => !ccftDepartments.Exists(b => b.ToLower() == a.ToLower())).ToList();
 
                 ccftDepartments.AddRange(departments);
 
                 ccftDepartments.Sort();
-                ccftDepartments.Insert(1, "EFERTDHKALL");
+
                 cbxDepartments.Items.AddRange(ccftDepartments.ToArray());
             }
 
@@ -533,7 +532,7 @@ namespace AttendanceReport
 
                 ccftDepartments.Sort();
 
-                CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
                 cbxDepartments.Items.Add(items);
                 for (int i = 0; i < ccftDepartments.Count; i++)
                 {
@@ -564,7 +563,7 @@ namespace AttendanceReport
 
                 ccftSections.Sort();
 
-                CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
                 cbxSections.Items.Add(items);
                 for (int i = 0; i < ccftSections.Count; i++)
                 {
@@ -594,7 +593,7 @@ namespace AttendanceReport
 
                 ccftCompanyNames.Sort();
 
-                CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
                 cbxCompany.Items.Add(items);
                 for (int i = 0; i < ccftCompanyNames.Count; i++)
                 {
@@ -625,7 +624,7 @@ namespace AttendanceReport
 
                 ccftCadres.Sort();
 
-                CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
                 cbxCadre.Items.Add(items);
                 for (int i = 0; i < ccftCadres.Count; i++)
                 {
@@ -647,7 +646,7 @@ namespace AttendanceReport
 
                 crews.Sort();
 
-                CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
+                CCBoxItem items = new CCBoxItem("UnChek All", 0);
                 cbxCrew.Items.Add(items);
                 for (int i = 0; i < crews.Count; i++)
                 {

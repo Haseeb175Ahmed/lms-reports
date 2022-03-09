@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceReport", "AttendanceReport\AttendanceReport.csproj", "{B99BA4E1-8015-4D8B-AB40-0E82AAFB8D0E}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AttendanceReport_setup", "AttendanceReport_setup\AttendanceReport_setup.vdproj", "{5D774388-2765-44ED-9299-F1BF337C1E13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +15,8 @@ Global
 		{B99BA4E1-8015-4D8B-AB40-0E82AAFB8D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B99BA4E1-8015-4D8B-AB40-0E82AAFB8D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B99BA4E1-8015-4D8B-AB40-0E82AAFB8D0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D774388-2765-44ED-9299-F1BF337C1E13}.Debug|Any CPU.ActiveCfg = Debug
-		{5D774388-2765-44ED-9299-F1BF337C1E13}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {14FEF154-1E6A-4D60-B6D3-E4D548147A9B}
 	EndGlobalSection
 EndGlobal

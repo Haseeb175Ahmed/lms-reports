@@ -30,73 +30,73 @@ namespace AttendanceReport
         public Task<List<string>> mCrewTask = null;
         public Task<List<string>> mCadreTask = null;
         public Task<List<string>> mCompanyTask = null;
-        public const string UNCHECK_ALL = "UnCheck All";
+
         public ActivityReportForm()
         {
             InitializeComponent();
+            
 
+            this.mDepartmentTask = new Task<List<string>>(() =>
+            {
+                CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
 
-            //this.mDepartmentTask = new Task<List<string>>(() =>
-            //{
-            //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
+                List<string> departments = (from pds in ccftCentral.PersonalDataStrings
+                                            where pds != null && pds.PersonalDataFieldID == 5043 && pds.Value != null
+                                            select pds.Value).Distinct().ToList();
 
-            //    List<string> departments = (from pds in ccftCentral.PersonalDataStrings
-            //                                where pds != null && pds.PersonalDataFieldID == 5043 && pds.Value != null
-            //                                select pds.Value).Distinct().ToList();
+                return departments;
+            });
 
-            //    return departments;
-            //});
+            this.mSectionTask = new Task<List<string>>(() =>
+            {
+                CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
 
-            //this.mSectionTask = new Task<List<string>>(() =>
-            //{
-            //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
+                List<string> sections = (from pds in ccftCentral.PersonalDataStrings
+                                         where pds != null && pds.PersonalDataFieldID == 12951 && pds.Value != null
+                                         select pds.Value).Distinct().ToList();
 
-            //    List<string> sections = (from pds in ccftCentral.PersonalDataStrings
-            //                             where pds != null && pds.PersonalDataFieldID == 12951 && pds.Value != null
-            //                             select pds.Value).Distinct().ToList();
+                return sections;
+            });
 
-            //    return sections;
-            //});
+            this.mCrewTask = new Task<List<string>>(() =>
+            {
+                CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
 
-            //this.mCrewTask = new Task<List<string>>(() =>
-            //{
-            //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
+                List<string> crews = (from pds in ccftCentral.PersonalDataStrings
+                                      where pds != null && pds.PersonalDataFieldID == 12869 && pds.Value != null
+                                      select pds.Value).Distinct().ToList();
 
-            //    List<string> crews = (from pds in ccftCentral.PersonalDataStrings
-            //                          where pds != null && pds.PersonalDataFieldID == 12869 && pds.Value != null
-            //                          select pds.Value).Distinct().ToList();
+                return crews;
+            });
 
-            //    return crews;
-            //});
+            this.mCadreTask = new Task<List<string>>(() =>
+            {
+                CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
 
-            //this.mCadreTask = new Task<List<string>>(() =>
-            //{
-            //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
+                List<string> cadres = (from pds in ccftCentral.PersonalDataStrings
+                                       where pds != null && pds.PersonalDataFieldID == 12952 && pds.Value != null
+                                       select pds.Value).Distinct().ToList();
 
-            //    List<string> cadres = (from pds in ccftCentral.PersonalDataStrings
-            //                           where pds != null && pds.PersonalDataFieldID == 12952 && pds.Value != null
-            //                           select pds.Value).Distinct().ToList();
+                return cadres;
+            });
 
-            //    return cadres;
-            //});
+            this.mCompanyTask = new Task<List<string>>(() =>
+            {
+                CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
 
-            //this.mCompanyTask = new Task<List<string>>(() =>
-            //{
-            //    CCFTCentral.CCFTCentral ccftCentral = EFERTDbUtility.mCCFTCentral;
+                List<string> companyNames = (from pds in ccftCentral.PersonalDataStrings
+                                             where pds != null && pds.PersonalDataFieldID == 5059 && pds.Value != null
+                                             select pds.Value).Distinct().ToList();
 
-            //    List<string> companyNames = (from pds in ccftCentral.PersonalDataStrings
-            //                                 where pds != null && pds.PersonalDataFieldID == 5059 && pds.Value != null
-            //                                 select pds.Value).Distinct().ToList();
+                return companyNames;
+            });
 
-            //    return companyNames;
-            //});
+            this.mDepartmentTask.Start();
+            this.mSectionTask.Start();
+            this.mCrewTask.Start();
+            this.mCadreTask.Start();
+            this.mCompanyTask.Start();
 
-            //this.mDepartmentTask.Start();
-            //this.mSectionTask.Start();
-            //this.mCrewTask.Start();
-            //this.mCadreTask.Start();
-            //this.mCompanyTask.Start();
-            EFERTDbUtility.UpdateDropDownFieldsMultiCombobox(this.cbxDepartments, this.cbxSections, this.cbxCompany, this.cbxCadre, this.cbxCrew);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -141,7 +141,7 @@ namespace AttendanceReport
 
                 #region Dummy Data
 
-                //List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>() {
+                //    List<CCFTEvent.Event> lstEvents = new List<CCFTEvent.Event>() {
                 //     new CCFTEvent.Event() {
                 //        EventType = 20001,
                 //        OccurrenceTime = new DateTime(2017,09,16,05,42,44,DateTimeKind.Utc),
@@ -618,215 +618,60 @@ namespace AttendanceReport
 
                 List<CheckInAndOutInfo> filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
                                                             where checkin != null && !checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
-                                                                strLstTempCards.Contains(checkin.CardNumber)                                                               
-                                                            select checkin).ToList();
-
-                if (!string.IsNullOrEmpty(filterByCNIC))
-                {
-                    filteredCheckIns = (from checkin in filteredCheckIns
-                                        where checkin != null && ((checkin.CardHolderInfos != null &&
-                                                                    checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
+                                                                strLstTempCards.Contains(checkin.CardNumber) &&
+                                                                (string.IsNullOrEmpty(filterByDepartment) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.Department != null &&
+                                                                    checkin.CardHolderInfos.Department.DepartmentName.ToLower() == filterByDepartment) ||
                                                                     (checkin.DailyCardHolders != null &&
-                                                                    checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
-                                                                    (checkin.Visitors != null &&
-                                                                    checkin.Visitors.CNICNumber == filterByCNIC))
-                                        select checkin).ToList();
-                }
-                else if (!string.IsNullOrEmpty(filerByName))
-                {
-                    filerByName = filerByName.ToLower();
-                    filteredCheckIns = (from checkin in filteredCheckIns
-                                        where checkin != null && ((checkin.CardHolderInfos != null &&
+                                                                    checkin.DailyCardHolders.Department.ToLower() == filterByDepartment))) &&
+                                                                (string.IsNullOrEmpty(filterBySection) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.Section != null &&
+                                                                    checkin.CardHolderInfos.Section.SectionName.ToLower() == filterBySection) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    checkin.DailyCardHolders.Section.ToLower() == filterBySection))) &&
+                                                                (string.IsNullOrEmpty(filerByName) ||
+                                                                    ((checkin.CardHolderInfos != null &&
                                                                     checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
                                                                     (checkin.DailyCardHolders != null &&
                                                                     checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)) ||
                                                                     (checkin.Visitors != null &&
-                                                                    checkin.Visitors.FirstName.ToLower().Contains(filerByName)))
-                                        select checkin).ToList();
-                }
-                else if (!string.IsNullOrEmpty(filterByCardNumber))
-                {
-                    filteredCheckIns = (from checkin in filteredCheckIns
-                                        where checkin != null && checkin.CardHolderInfos != null && checkin.CardHolderInfos.CardNumber == filterByCardNumber
-                                        select checkin).ToList();
-                }
-                else if (!string.IsNullOrEmpty(filterByPnumber))
-                {
-                    filteredCheckIns = (from checkin in filteredCheckIns
-                                        where checkin != null && checkin.CardHolderInfos != null && checkin.CardHolderInfos.PNumber == filterByPnumber
-                                        select checkin).ToList();
-                }
-                else
-                {
+                                                                    checkin.Visitors.FirstName.ToLower().Contains(filerByName)))) &&
+                                                                (string.IsNullOrEmpty(filterByCadre) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.Cadre != null &&
+                                                                    checkin.CardHolderInfos.Cadre.CadreName.ToLower() == filterByCadre) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    checkin.DailyCardHolders.Cadre.ToLower() == filterByCadre))) &&
+                                                                (string.IsNullOrEmpty(filterByCompany) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.Company != null &&
+                                                                    !string.IsNullOrEmpty(checkin.CardHolderInfos.Company.CompanyName) &&
+                                                                    checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    !string.IsNullOrEmpty(checkin.DailyCardHolders.CompanyName) &&
+                                                                    checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany) ||
+                                                                    (checkin.Visitors != null &&
+                                                                    !string.IsNullOrEmpty(checkin.Visitors.CompanyName) &&
+                                                                    checkin.Visitors.CompanyName.ToLower() == filterByCompany))) &&
+                                                                (string.IsNullOrEmpty(filterByCNIC) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
+                                                                    (checkin.DailyCardHolders != null &&
+                                                                    checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
+                                                                    (checkin.Visitors != null &&
+                                                                    checkin.Visitors.CNICNumber == filterByCNIC))) &&
+                                                                (string.IsNullOrEmpty(filterByPnumber) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.PNumber == filterByPnumber))) &&
+                                                                (string.IsNullOrEmpty(filterByCrew) ||
+                                                                    ((checkin.CardHolderInfos != null &&
+                                                                    checkin.CardHolderInfos.Crew != null &&
+                                                                    checkin.CardHolderInfos.Crew.CrewName == filterByCrew)))
+                                                            select checkin).ToList();
+                
 
-                    List<CheckInAndOutInfo> filteredCheckInsNew = new List<CheckInAndOutInfo>();
-
-                    for (int i = 0; i < filteredCheckIns.Count; i++)
-                    {
-                        CheckInAndOutInfo checkInAndOutInfo = filteredCheckIns[i];
-
-                        if (checkInAndOutInfo == null)
-                        {
-                            continue;
-                        }
-
-                        //filterBySection
-                        if (!string.IsNullOrEmpty(filterBySection))
-                        {
-
-                            string section = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Section != null)
-                            {
-                                section = checkInAndOutInfo.CardHolderInfos.Section.SectionName;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Section))
-                                {
-                                    section = checkInAndOutInfo.DailyCardHolders.Section;
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(section))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterBySection, section);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-
-                        //filterByCadre
-                        if (!string.IsNullOrEmpty(filterByCadre))
-                        {
-
-                            string cadre = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Cadre != null)
-                            {
-                                cadre = checkInAndOutInfo.CardHolderInfos.Cadre.CadreName;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Cadre))
-                                {
-                                    cadre = checkInAndOutInfo.DailyCardHolders.Cadre;
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(cadre))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCadre, cadre);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-
-                        //filterByCrew
-                        if (!string.IsNullOrEmpty(filterByCrew))
-                        {
-
-                            string crew = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Crew != null)
-                            {
-                                crew = checkInAndOutInfo.CardHolderInfos.Crew.CrewName;
-                            }
-
-                            if (!string.IsNullOrEmpty(crew))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCrew, crew);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-
-                        //filterByDepartment
-                        if (!string.IsNullOrEmpty(filterByDepartment))
-                        {
-
-                            string dept = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Department != null)
-                            {
-                                dept = checkInAndOutInfo.CardHolderInfos.Department.DepartmentName;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.Department))
-                                {
-                                    dept = checkInAndOutInfo.DailyCardHolders.Department;
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(dept))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByDepartment, dept);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-
-                        //filterByCompany
-                        if (!string.IsNullOrEmpty(filterByCompany))
-                        {
-                            string company = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Company != null)
-                            {
-                                company = checkInAndOutInfo.CardHolderInfos.Company.CompanyName;
-                            }
-                            else if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.CompanyName))
-                            {
-                                company = checkInAndOutInfo.DailyCardHolders.CompanyName;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.Visitors != null && !string.IsNullOrEmpty(checkInAndOutInfo.Visitors.CompanyName))
-                                {
-                                    company = checkInAndOutInfo.Visitors.CompanyName;
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(company))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCompany, company);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-
-
-                        filteredCheckInsNew.Add(checkInAndOutInfo);
-                    }
-
-                    filteredCheckIns = filteredCheckInsNew;
-                }
                 //MessageBox.Show(this, "Filtered Checkins: " + filteredCheckIns.Count);
 
                 foreach (KeyValuePair<DateTime, Dictionary<int, List<CCFTEvent.Event>>> inEvent in lstChlEvents)
@@ -1012,14 +857,49 @@ namespace AttendanceReport
                             company = string.IsNullOrEmpty(company) ? "Unknown" : company;
                             crew = string.IsNullOrEmpty(crew) ? "Unknown" : crew;
 
-                            //Filter By CNIC 31303-4961345-5
-                            if (!string.IsNullOrEmpty(filterByCNIC) && cnicNumber != filterByCNIC)
+                            //Filter By Department
+                            if (string.IsNullOrEmpty(department) || !string.IsNullOrEmpty(filterByDepartment) && department.ToLower() != filterByDepartment.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Section
+                            if (string.IsNullOrEmpty(section) || !string.IsNullOrEmpty(filterBySection) && section.ToLower() != filterBySection.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Cadre
+                            if (string.IsNullOrEmpty(cadre) || !string.IsNullOrEmpty(filterByCadre) && section.ToLower() != filterByCadre.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By Company
+                            if (!string.IsNullOrEmpty(filterByCompany) && company.ToLower() != filterByCompany.ToLower())
+                            {
+                                continue;
+                            }
+
+                            //Filter By CNIC
+                            if (string.IsNullOrEmpty(cnicNumber) || !string.IsNullOrEmpty(filterByCNIC) && cnicNumber != filterByCNIC)
                             {
                                 continue;
                             }
 
                             //Filter By Name
                             if (!string.IsNullOrEmpty(filerByName) && !chl.FirstName.ToLower().Contains(filerByName.ToLower()))
+                            {
+                                continue;
+                            }
+
+                            if (!string.IsNullOrEmpty(filterByPnumber) && strPnumber != filterByPnumber)
+                            {
+                                continue;
+                            }
+
+                            //Filter By Crew
+                            if (!string.IsNullOrEmpty(filterByCrew) && crew != filterByCrew)
                             {
                                 continue;
                             }
@@ -1043,69 +923,6 @@ namespace AttendanceReport
                                     continue;
                                 }
 
-                            }
-
-                            if (!string.IsNullOrEmpty(filterByPnumber) && strPnumber != filterByPnumber)
-                            {
-                                continue;
-                            }
-
-
-
-
-                            //Filter By Section
-                            if (!string.IsNullOrEmpty(filterBySection))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterBySection, section);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-
-
-                            //Filter By Cadre
-                            if (!string.IsNullOrEmpty(filterByCadre))
-                            {
-
-                                bool isValidEntry = Helper.isValidEntry(filterByCadre, cadre);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-
-
-
-                            //Filter By Crew
-                            if (!string.IsNullOrEmpty(filterByCrew))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCrew, crew);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-
-
-                            //Filter By Department
-                            if (!string.IsNullOrEmpty(filterByDepartment))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByDepartment, department);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-
-                            //Filter By Company
-                            if (!string.IsNullOrEmpty(filterByCompany))
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCompany, company);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
                             }
 
                             DateTime minInTime = DateTime.MaxValue;
@@ -2116,7 +1933,7 @@ namespace AttendanceReport
                     Cursor currentCursor = Cursor.Current;
                     Cursor.Current = Cursors.WaitCursor;
 
-                    List<string> crews = new List<string>();
+                    List<string> crews = new List<string>() { string.Empty };
 
                     if (this.mCrewTask == null)
                     {
@@ -2131,17 +1948,7 @@ namespace AttendanceReport
                         crews.AddRange(this.mCrewTask.Result);
                     }
 
-                    CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
-                    this.cbxCrew.Items.Add(items);
-                    for (int i = 0; i < crews.Count; i++)
-                    {
-                        CCBoxItem item = new CCBoxItem(crews[i], i + 1);
-                        this.cbxCrew.Items.Add(item);
-                    }
-                    // If more then 5 items, add a scroll bar to the dropdown.
-                    this.cbxCrew.MaxDropDownItems = 20;
-                    this.cbxCrew.DisplayMember = "Name";
-                    
+                    this.cbxCrew.Items.AddRange(crews.ToArray());
                     Cursor.Current = currentCursor;
                 }
             }
@@ -2160,7 +1967,7 @@ namespace AttendanceReport
                     Cursor currentCursor = Cursor.Current;
                     Cursor.Current = Cursors.WaitCursor;
 
-                    List<string> sections = new List<string>();
+                    List<string> sections = new List<string>() { string.Empty };
 
                     if (this.mSectionTask == null)
                     {
@@ -2175,17 +1982,7 @@ namespace AttendanceReport
                         sections.AddRange(this.mSectionTask.Result);
                     }
 
-                    CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
-                    this.cbxSections.Items.Add(items);
-                    for (int i = 0; i < sections.Count; i++)
-                    {
-                        CCBoxItem item = new CCBoxItem(sections[i], i + 1);
-                        this.cbxSections.Items.Add(item);
-                    }
-                    
-                    this.cbxSections.MaxDropDownItems = 20;
-                    this.cbxSections.DisplayMember = "Name";
-                    
+                    this.cbxSections.Items.AddRange(sections.ToArray());
                     Cursor.Current = currentCursor;
                 }
             }
@@ -2204,7 +2001,7 @@ namespace AttendanceReport
                     Cursor currentCursor = Cursor.Current;
                     Cursor.Current = Cursors.WaitCursor;
 
-                    List<string> departments = new List<string>();
+                    List<string> departments = new List<string>() { string.Empty };
 
                     if (this.mDepartmentTask == null)
                     {
@@ -2219,17 +2016,7 @@ namespace AttendanceReport
                         departments.AddRange(this.mDepartmentTask.Result);
                     }
 
-                    CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
-                    this.cbxDepartments.Items.Add(items);
-                    for (int i = 0; i < departments.Count; i++)
-                    {
-                        CCBoxItem item = new CCBoxItem(departments[i], i + 1);
-                        this.cbxDepartments.Items.Add(item);
-                    }
-
-                    this.cbxDepartments.MaxDropDownItems = 20;
-                    this.cbxDepartments.DisplayMember = "Name";
-                   
+                    this.cbxDepartments.Items.AddRange(departments.ToArray());
                     Cursor.Current = currentCursor;
                 }
             }
@@ -2248,7 +2035,7 @@ namespace AttendanceReport
                     Cursor currentCursor = Cursor.Current;
                     Cursor.Current = Cursors.WaitCursor;
 
-                    List<string> cadres = new List<string>();
+                    List<string> cadres = new List<string>() { string.Empty };
 
                     if (this.mCadreTask == null)
                     {
@@ -2262,17 +2049,8 @@ namespace AttendanceReport
                     {
                         cadres.AddRange(this.mCadreTask.Result);
                     }
-                    CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
-                    this.cbxCadre.Items.Add(items);
-                    for (int i = 0; i < cadres.Count; i++)
-                    {
-                        CCBoxItem item = new CCBoxItem(cadres[i], i + 1);
-                        this.cbxCadre.Items.Add(item);
-                    }
 
-                    this.cbxCadre.MaxDropDownItems = 20;
-                    this.cbxCadre.DisplayMember = "Name";
-                    
+                    this.cbxCadre.Items.AddRange(cadres.ToArray());
                     Cursor.Current = currentCursor;
                 }
             }
@@ -2291,7 +2069,7 @@ namespace AttendanceReport
                     Cursor currentCursor = Cursor.Current;
                     Cursor.Current = Cursors.WaitCursor;
 
-                    List<string> companyNames = new List<string>();
+                    List<string> companyNames = new List<string>() { string.Empty };
 
                     if (this.mCompanyTask == null)
                     {
@@ -2306,17 +2084,7 @@ namespace AttendanceReport
                         companyNames.AddRange(this.mCompanyTask.Result);
                     }
 
-                    CCBoxItem items = new CCBoxItem(UNCHECK_ALL, 0);
-                    this.cbxCompany.Items.Add(items);
-                    for (int i = 0; i < companyNames.Count; i++)
-                    {
-                        CCBoxItem item = new CCBoxItem(companyNames[i], i + 1);
-                        this.cbxCompany.Items.Add(item);
-                    }
-
-                    this.cbxCompany.MaxDropDownItems = 20;
-                    this.cbxCompany.DisplayMember = "Name";
-                    
+                    this.cbxCompany.Items.AddRange(companyNames.ToArray());
                     Cursor.Current = currentCursor;
                 }
             }

@@ -31,7 +31,7 @@ namespace AttendanceReport
 
             this.mCardNotReturned = cardNotReturned;
 
-            EFERTDbUtility.UpdateDropDownFieldsMultiCombobox(null, null, this.cbxCompany, null, null);
+            EFERTDbUtility.UpdateDropDownFields(null, null, this.cbxCompany, null, null);
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
@@ -57,153 +57,97 @@ namespace AttendanceReport
                 List<CheckInAndOutInfo> filteredCheckIns = new List<CheckInAndOutInfo>();
                 if (this.mCardNotReturned)
                 {
-                    filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
-                                        where checkin != null && checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate
-                                        select checkin).ToList();
-
-                }
-                else
-                {
-                    filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
-                                        where checkin != null && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate
-                                        select checkin).ToList();
-                }
-
-
-                if (!string.IsNullOrEmpty(filterByCNIC))
-                {
                     if (this.mIsVisitorReport)
                     {
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null && (checkin.Visitors != null && checkin.Visitors.CNICNumber == filterByCNIC)
+                        filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
+                                            where checkin != null && checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
+                                                        (string.IsNullOrEmpty(filerByName) ||
+                                                         (checkin.Visitors != null &&
+                                                           checkin.Visitors.FirstName.ToLower().Contains(filerByName))) &&
+                                                        (string.IsNullOrEmpty(filterByCNIC) ||
+                                                         (checkin.Visitors != null &&
+                                                           checkin.Visitors.CNICNumber == filterByCNIC))
                                             select checkin).ToList();
                     }
                     else
                     {
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null && ((checkin.CardHolderInfos != null &&
-                                                                        checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
-                                                                        (checkin.DailyCardHolders != null &&
-                                                                        checkin.DailyCardHolders.CNICNumber == filterByCNIC) ||
-                                                                        (checkin.Visitors != null &&
-                                                                        checkin.Visitors.CNICNumber == filterByCNIC))
+                        filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
+                                            where checkin != null && checkin.CheckedIn && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
+                                                        (string.IsNullOrEmpty(filerByName) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)))) &&
+                                                        (string.IsNullOrEmpty(filterByCategory) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.ConstractorInfo != null &&
+                                                           checkin.CardHolderInfos.ConstractorInfo.ToLower() == filterByCategory) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.ConstractorInfo.ToLower() == filterByCategory))) &&
+                                                         (string.IsNullOrEmpty(filterByCompany) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.Company != null &&
+                                                           checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany))) &&
+                                                         (string.IsNullOrEmpty(filterByCNIC) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.CNICNumber == filterByCNIC)))
                                             select checkin).ToList();
                     }
-                   
+
+                    
                 }
-                else if (!string.IsNullOrEmpty(filerByName))
+                else
                 {
                     if (this.mIsVisitorReport)
                     {
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null && (checkin.Visitors != null &&
-                                                                        checkin.Visitors.FirstName.ToLower().Contains(filerByName))
+                        filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
+                                            where checkin != null && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
+                                                        (string.IsNullOrEmpty(filerByName) ||
+                                                         (checkin.Visitors != null &&
+                                                           checkin.Visitors.FirstName.ToLower().Contains(filerByName))) &&
+                                                        (string.IsNullOrEmpty(filterByCNIC) ||
+                                                         (checkin.Visitors != null &&
+                                                           checkin.Visitors.CNICNumber == filterByCNIC))
                                             select checkin).ToList();
                     }
                     else
                     {
-                        filteredCheckIns = (from checkin in filteredCheckIns
-                                            where checkin != null && ((checkin.CardHolderInfos != null &&
-                                                                        checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
-                                                                        (checkin.DailyCardHolders != null &&
-                                                                        checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)) ||
-                                                                        (checkin.Visitors != null &&
-                                                                        checkin.Visitors.FirstName.ToLower().Contains(filerByName)))
+                        filteredCheckIns = (from checkin in EFERTDbUtility.mEFERTDb.CheckedInInfos
+                                            where checkin != null && checkin.DateTimeIn >= fromDate && checkin.DateTimeIn < toDate &&
+                                                        (string.IsNullOrEmpty(filerByName) ||
+                                                         ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.FirstName.ToLower().Contains(filerByName)) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.FirstName.ToLower().Contains(filerByName)))) &&
+                                                        (string.IsNullOrEmpty(filterByCategory) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.ConstractorInfo != null &&
+                                                           checkin.CardHolderInfos.ConstractorInfo.ToLower() == filterByCategory) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.ConstractorInfo.ToLower() == filterByCategory))) &&
+                                                         (string.IsNullOrEmpty(filterByCompany) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.Company != null &&
+                                                           checkin.CardHolderInfos.Company.CompanyName.ToLower() == filterByCompany) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.CompanyName.ToLower() == filterByCompany))) &&
+                                                        (string.IsNullOrEmpty(filterByCNIC) ||
+                                                           ((checkin.CardHolderInfos != null &&
+                                                           checkin.CardHolderInfos.CNICNumber == filterByCNIC) ||
+                                                           (checkin.DailyCardHolders != null &&
+                                                           checkin.DailyCardHolders.CNICNumber == filterByCNIC)))
                                             select checkin).ToList();
                     }
-
-                       
                 }
-                else
-                {
-
-                    List<CheckInAndOutInfo> filteredCheckInsNew = new List<CheckInAndOutInfo>();
-
-                    for (int i = 0; i < filteredCheckIns.Count; i++)
-                    {
-                        CheckInAndOutInfo checkInAndOutInfo = filteredCheckIns[i];
-
-                        if (checkInAndOutInfo == null)
-                        {
-                            continue;
-                        }
 
 
-
-                        //filterByCategory
-                        if (!string.IsNullOrEmpty(filterByCategory)&& !this.mIsVisitorReport)
-                        {
-                           
-                            string dept = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && !string.IsNullOrEmpty(checkInAndOutInfo.CardHolderInfos.ConstractorInfo))
-                            {
-                                dept = checkInAndOutInfo.CardHolderInfos.ConstractorInfo;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.ConstractorInfo))
-                                {
-                                    dept = checkInAndOutInfo.DailyCardHolders.ConstractorInfo;
-                                }
-                            }
-
-                            if (string.IsNullOrEmpty(dept))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCategory, dept);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        //filterByCompany
-                        if (!string.IsNullOrEmpty(filterByCompany))
-                        {
-                            string company = string.Empty;
-                            if (checkInAndOutInfo.CardHolderInfos != null && checkInAndOutInfo.CardHolderInfos.Company != null)
-                            {
-                                company = checkInAndOutInfo.CardHolderInfos.Company.CompanyName;
-                            }
-                            else if (checkInAndOutInfo.DailyCardHolders != null && !string.IsNullOrEmpty(checkInAndOutInfo.DailyCardHolders.CompanyName))
-                            {
-                                company = checkInAndOutInfo.DailyCardHolders.CompanyName;
-                            }
-                            else
-                            {
-                                if (checkInAndOutInfo.Visitors != null && !string.IsNullOrEmpty(checkInAndOutInfo.Visitors.CompanyName))
-                                {
-                                    company = checkInAndOutInfo.Visitors.CompanyName;
-                                }
-                            }
-
-                            if (string.IsNullOrEmpty(company))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                bool isValidEntry = Helper.isValidEntry(filterByCompany, company);
-                                if (!isValidEntry)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-
-                        filteredCheckInsNew.Add(checkInAndOutInfo);
-                    }
-
-                    filteredCheckIns = filteredCheckInsNew;
-
-                }
 
                 filteredCheckIns.Sort((a, b) => DateTime.Compare(a.DateTimeIn, b.DateTimeIn));
+
 
 
                 foreach (CheckInAndOutInfo checkIn in filteredCheckIns)
@@ -986,6 +930,6 @@ namespace AttendanceReport
             //    SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).
             //    SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE));
         }
-       
+        
     }
 }

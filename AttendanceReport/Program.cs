@@ -30,9 +30,8 @@ namespace AttendanceReport
                     splash.Invoke(new Action(() => { splash.Close(); }));
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    CreateLogFiles.ErrorLog(ex.Message + " " + ex.StackTrace);
 
                     throw;
                 }
@@ -116,7 +115,6 @@ namespace AttendanceReport
             }
             catch (System.Exception ex)
             {
-                CreateLogFiles.ErrorLog(ex.Message + " " + ex.StackTrace);
                 throw (ex);
             }
             finally
