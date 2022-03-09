@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace AttendanceReport
 {
     public partial class LoginForm : Form
-    {
+    {s
         public static LoginForm mMainForm = null;
         public static AppUser mLoggedInUser = null;
       
@@ -200,6 +200,8 @@ namespace AttendanceReport
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
+           //this.tbxUserName.Text = "Admin";
+           //this.tbxPassword.Text = "Efart@12345%$#@!";
         }
     }
 }
